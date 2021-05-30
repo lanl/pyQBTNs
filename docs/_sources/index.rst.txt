@@ -88,7 +88,7 @@ How to Cite pyQBTNs?
 .. code-block:: console
 
     @MISC{Pelofske2021_pyQBTNs,
-      author = {E. {Elijah} and H. {Djidjev} and D. {O'Malley} and G. {Hahn} and B. S. {Alexandrov} and M. E. {Eren}},
+      author = {E. {Pelofske} and H. {Djidjev} and D. {O'Malley} and M. E. {Eren} and G. {Hahn} and B. S. {Alexandrov}},
       title = {pyQBTNs},
       year = {2021},
       publisher = {GitHub},
