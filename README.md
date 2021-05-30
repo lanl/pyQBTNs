@@ -26,7 +26,7 @@ pip install git+https://github.com/lanl/pyQBTNs
 #### Option 2: Install from source
 ```shell
 git clone https://github.com/lanl/pyQBTNs
-cd qbtns
+cd pyQBTNs
 conda create --name pyQBTNs python=3.7.3
 source activate pyQBTNs
 python setup.py install
