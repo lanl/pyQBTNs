@@ -2,7 +2,7 @@
 
 <div align="center", style="font-size: 50px">
 
-[![Build Status](https://github.com/lanl/pyQBTNs/actions/workflows/ci_tests.yml/badge.svg?branch=main)](https://github.com/lanl/pyCP_APR/actions/workflows/ci_tests.yml/badge.svg?branch=main) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg) [![Python Version](https://img.shields.io/badge/python-v3.7.3-blue)](https://img.shields.io/badge/python-v3.7.3-blue) [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.0000000-blue.svg)](https://doi.org/10.5281/zenodo.???????)
+[![Build Status](https://github.com/lanl/pyQBTNs/actions/workflows/ci_tests.yml/badge.svg?branch=main)](https://github.com/lanl/pyCP_APR/actions/workflows/ci_tests.yml/badge.svg?branch=main) [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg) [![Python Version](https://img.shields.io/badge/python-v3.7.3-blue)](https://img.shields.io/badge/python-v3.7.3-blue) [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.4876527-blue.svg)](https://doi.org/10.5281/zenodo.4876527)
 
 </div>
 
@@ -83,7 +83,7 @@ print(score)
     year = {2021},
     publisher = {GitHub},
     journal = {GitHub repository},
-    doi = {10.5281/zenodo.???????},
+    doi = {10.5281/zenodo.4876527},
     howpublished = {\url{https://github.com/lanl/pyQBTNs}}
 }
 
