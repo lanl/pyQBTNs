@@ -103,7 +103,6 @@ print(score)
 - [Hristo Djidjev](mailto:djidjev@lanl.gov): Information Sciences, Los Alamos National Laboratory
 - [Dan O'Malley](mailto:omalled@lanl.gov): Computational Earth Science, Los Alamos National Laboratory
 - [Maksim E. Eren](mailto:maksim@lanl.gov): Advanced Research in Cyber Systems, Los Alamos National Laboratory
-- Georg Hahn
 - [Boian S. Alexandrov](mailto:boian@lanl.gov): Theoretical Division, Los Alamos National Laboratory
 
 ## Copyright Notice:
