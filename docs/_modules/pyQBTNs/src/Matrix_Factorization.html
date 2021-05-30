@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyQBTNs.src.Matrix_Factorization &mdash; pyQBTNs 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyQBTNs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../QBTNs.html">pyQBTNs.QBTNs API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyQBTNs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyQBTNs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyQBTNs.src.Matrix_Factorization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyQBTNs.src.Matrix_Factorization</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">nimfa.methods.seeding.nndsvd</span> <span class="kn">import</span> <span class="n">Nndsvd</span>
+<span class="kn">from</span> <span class="nn">.quantum_solve</span> <span class="kn">import</span> <span class="n">batch_parallel_quantum_annealing</span><span class="p">,</span> <span class="n">batch_quantum_annealing</span>
+<span class="kn">from</span> <span class="nn">.classical_solve</span> <span class="kn">import</span> <span class="n">batch_classical_single_QUBO</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_hamming_distance</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Matrix Factorization</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Matrix_Factorization"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Matrix_Factorization.Matrix_Factorization">[docs]</a><span class="k">class</span> <span class="nc">Matrix_Factorization</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_method</span><span class="p">,</span> <span class="n">NNSVD_INITIAL_STATE_FLAG</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maximum_iterations</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maximum_converged_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">number_of_random_initial_states</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_initial_state_lower_bound</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_initial_state_upper_bound</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">parallel_bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        solver_method : string</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        NNSVD_INITIAL_STATE_FLAG : integer, optional</span>
+<span class="sd">            DESCRIPTION. The default is 0.</span>
+<span class="sd">        maximum_iterations : integer, optional</span>
+<span class="sd">            DESCRIPTION. The default is 500.</span>
+<span class="sd">        maximum_converged_iterations : integer, optional</span>
+<span class="sd">            DESCRIPTION. The default is 100.</span>
+<span class="sd">        number_of_random_initial_states : integer, optional</span>
+<span class="sd">            DESCRIPTION. The default is 100.</span>
+<span class="sd">        random_initial_state_lower_bound : float, optional</span>
+<span class="sd">            DESCRIPTION. The default is 0.01.</span>
+<span class="sd">        random_initial_state_upper_bound : float, optional</span>
+<span class="sd">            DESCRIPTION. The default is 0.99.</span>
+<span class="sd">        parallel_bool : Boolean, optional</span>
+<span class="sd">            DESCRIPTION. The default is False.</span>
+<span class="sd">        random_state : integer, optional</span>
+<span class="sd">            DESCRIPTION. The default is 42.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">=</span> <span class="n">solver_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NNSVD_INITIAL_STATE_FLAG</span> <span class="o">=</span> <span class="n">NNSVD_INITIAL_STATE_FLAG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maximum_iterations</span> <span class="o">=</span> <span class="n">maximum_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maximum_converged_iterations</span> <span class="o">=</span> <span class="n">maximum_converged_iterations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_random_initial_states</span> <span class="o">=</span> <span class="n">number_of_random_initial_states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_initial_state_lower_bound</span> <span class="o">=</span> <span class="n">random_initial_state_lower_bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_initial_state_upper_bound</span> <span class="o">=</span> <span class="n">random_initial_state_upper_bound</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parallel_bool</span> <span class="o">=</span> <span class="n">parallel_bool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+
+<div class="viewcode-block" id="Matrix_Factorization.factor_matrix"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Matrix_Factorization.Matrix_Factorization.factor_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">factor_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        RANK : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        A : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        B : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        bool</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        error_tracking : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        error_tracking_data : TYPE</span>
+<span class="sd">            DESCRIPTION.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">N1</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># rows</span>
+        <span class="n">N2</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># columns</span>
+        <span class="n">error_tracking</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">error_tracking_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="n">get_hamming_distance</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+        <span class="n">error_tracking</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="n">error_tracking_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">err</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span>
+        <span class="k">while</span> <span class="n">error_tracking</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum_converged_iterations</span><span class="p">:]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">error_tracking</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_converged_iterations</span><span class="p">:</span>
+            <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_iterations</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># Goes to the return at the end of the function</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parallel_bool</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">==</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_parallel_quantum_annealing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parallel_bool</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">==</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_quantum_annealing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">!=</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_classical_single_QUBO</span><span class="p">(</span>
+                    <span class="n">X</span><span class="p">,</span> <span class="n">N2</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+            <span class="n">B_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">B_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B_p</span><span class="p">)</span>
+            <span class="n">B_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">B_p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">B_p</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>  <span class="c1"># Sanity checks that we are still dealing with 2-D matrices</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">get_hamming_distance</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+            <span class="n">error_tracking</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">error_tracking_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">err</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span>
+            <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">maximum_iterations</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># Goes to the return at the end of the function</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+            <span class="c1">#######################################################</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parallel_bool</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">==</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_parallel_quantum_annealing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">N1</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parallel_bool</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">==</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_quantum_annealing</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">N1</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span> <span class="o">!=</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">batch_classical_single_QUBO</span><span class="p">(</span>
+                    <span class="n">X</span><span class="p">,</span> <span class="n">N1</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver_method</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+            <span class="n">A_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="n">A_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A_p</span><span class="p">)</span>
+            <span class="n">A_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A_p</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">A_p</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
+            <span class="n">err</span> <span class="o">=</span> <span class="n">get_hamming_distance</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+            <span class="n">error_tracking</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+            <span class="n">error_tracking_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">err</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">)])</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+            <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span></div>
+
+<div class="viewcode-block" id="Matrix_Factorization.train"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Matrix_Factorization.Matrix_Factorization.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Factor the input matrix into A and B given X in the problem X=AB.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        T : numpy array</span>
+<span class="sd">            Tensor to be factored.</span>
+<span class="sd">        RANK : integer</span>
+<span class="sd">            factorization rank.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        A : numpy array</span>
+<span class="sd">            First matrix factor.</span>
+<span class="sd">        B : numpy array</span>
+<span class="sd">            Second matrix factor.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+
+        <span class="n">N1</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># rows</span>
+        <span class="n">N2</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># columns</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">hammings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">get_init_state</span> <span class="o">=</span> <span class="n">Nndsvd</span><span class="p">()</span>
+        <span class="n">A_init</span><span class="p">,</span> <span class="n">B_init</span> <span class="o">=</span> <span class="n">get_init_state</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">RANK</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;flag&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">NNSVD_INITIAL_STATE_FLAG</span><span class="p">})</span>
+        <span class="n">A_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">A_init</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">B_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">B_init</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor_matrix</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">A_init</span><span class="p">,</span> <span class="n">B_init</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">indicator</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span>
+        <span class="n">hammings</span> <span class="o">+=</span> <span class="n">error_tracking</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="n">error_tracking_data</span>
+        <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_random_initial_states</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_initial_state_lower_bound</span><span class="p">,</span>
+                               <span class="bp">self</span><span class="o">.</span><span class="n">random_initial_state_upper_bound</span><span class="p">)</span>
+
+            <span class="n">A_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+            <span class="n">B_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">N2</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+            <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor_matrix</span><span class="p">(</span>
+                <span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">A_init</span><span class="p">,</span> <span class="n">B_init</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">indicator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span>
+            <span class="n">hammings</span> <span class="o">+=</span> <span class="n">error_tracking</span>
+            <span class="n">data</span> <span class="o">+=</span> <span class="n">error_tracking_data</span>
+        <span class="c1"># Now trying the best pair found for more iterations</span>
+        <span class="n">minimum_hamming</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">hammings</span><span class="p">)</span>
+        <span class="n">possible_choices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">minimum_hamming</span><span class="p">:</span>
+                <span class="n">possible_choices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">possible_choices</span><span class="p">)</span>
+        <span class="n">A_init</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">B_init</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">indicator</span><span class="p">,</span> <span class="n">error_tracking</span><span class="p">,</span> <span class="n">error_tracking_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor_matrix</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">A_init</span><span class="p">,</span> <span class="n">B_init</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">indicator</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span>
+        <span class="n">hammings</span> <span class="o">+=</span> <span class="n">error_tracking</span>
+        <span class="n">data</span> <span class="o">+=</span> <span class="n">error_tracking_data</span>
+        <span class="c1"># If we reach this point, we did not find an exact factorization</span>
+        <span class="c1"># Therefore, we now select a random A, B pair that has a minimum hamming distance</span>
+        <span class="n">minimum_hamming</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">hammings</span><span class="p">)</span>
+        <span class="n">possible_choices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">minimum_hamming</span><span class="p">:</span>
+                <span class="n">possible_choices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">possible_choices</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LANL.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

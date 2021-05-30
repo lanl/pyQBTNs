@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyQBTNs.pyQBTNs &mdash; pyQBTNs 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> pyQBTNs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../QBTNs.html">pyQBTNs.QBTNs API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">pyQBTNs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyQBTNs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyQBTNs.pyQBTNs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyQBTNs.pyQBTNs</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This software was developed as a tool to factor tensors using quantum annealers. </span>
+<span class="sd">Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks. </span>
+
+<span class="sd">The software allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve during the factorization algorithm.</span>
+
+<span class="sd">In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">.src.Tensor_Train_Recursive</span> <span class="kn">import</span> <span class="n">Tensor_Train_Recursive</span>
+<span class="kn">from</span> <span class="nn">.src.Tensor_Train_Iterative</span> <span class="kn">import</span> <span class="n">Tensor_Train_Iterative</span>
+<span class="kn">from</span> <span class="nn">.src.Hierarchical_Tucker</span> <span class="kn">import</span> <span class="n">Hierarchical_Tucker</span>
+<span class="kn">from</span> <span class="nn">.src.Tucker_Recursive</span> <span class="kn">import</span> <span class="n">Tucker_Recursive</span>
+<span class="kn">from</span> <span class="nn">.src.Tucker_Iterative</span> <span class="kn">import</span> <span class="n">Tucker_Iterative</span>
+<span class="kn">from</span> <span class="nn">.src.Matrix_Factorization</span> <span class="kn">import</span> <span class="n">Matrix_Factorization</span>
+<span class="kn">from</span> <span class="nn">.src.utils</span> <span class="kn">import</span> <span class="n">get_hamming_distance</span><span class="p">,</span> <span class="n">Start_DWave_connection</span>
+<span class="kn">from</span> <span class="nn">.src.tensor_utils</span> <span class="kn">import</span> <span class="n">reconstruct_TT</span><span class="p">,</span> <span class="n">reconstruct_HT</span><span class="p">,</span> <span class="n">reconstruct_tucker</span>
+<span class="kn">from</span> <span class="nn">.src.generate_fixed_embeddings</span> <span class="kn">import</span> <span class="n">iterative_embedding</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">dwave</span> <span class="kn">import</span> <span class="n">embedding</span>
+
+
+<div class="viewcode-block" id="QBTNs"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs">[docs]</a><span class="k">class</span> <span class="nc">QBTNs</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initilize the QBTNs class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        factorization_method : string</span>
+<span class="sd">            Options are : &#39;Matrix_Factorization&#39;, &#39;Tensor_Train_Recursive&#39;, &#39;Tensor_Train_Iterative&#39;, &#39;Hierarchical_Tucker&#39;, &#39;Tucker_Recursive&#39;, &#39;Tucker_Iterative&#39;.</span>
+
+<span class="sd">        solver_method : string, optional</span>
+<span class="sd">            Options are : &quot;d-wave&quot;, &quot;classical-simulated-annealing&quot;, &quot;classical-steepest-descent&quot;, &quot;classsical-tabu-sampler&quot;. Default is &quot;classical-simulated-annealing&quot;</span>
+
+<span class="sd">        random_state : integer, optional</span>
+<span class="sd">            Integer to set random seeds in the algorithm.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">allowed_factorization_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Matrix_Factorization&#39;</span><span class="p">,</span> <span class="s1">&#39;Tensor_Train_Recursive&#39;</span><span class="p">,</span> <span class="s1">&#39;Tensor_Train_Iterative&#39;</span><span class="p">,</span>
+                                         <span class="s1">&#39;Hierarchical_Tucker&#39;</span><span class="p">,</span> <span class="s1">&#39;Tucker_Recursive&#39;</span><span class="p">,</span> <span class="s1">&#39;Tucker_Iterative&#39;</span><span class="p">]</span>
+        <span class="c1"># Compute method</span>
+        <span class="k">assert</span> <span class="s1">&#39;factorization_method&#39;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">,</span> <span class="s2">&quot;You must specify a factorization method. Please choose from: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allowed_factorization_methods</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;factorization_method&#39;</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;factorization_method&#39;</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">allowed_factorization_methods</span><span class="p">,</span> <span class="s2">&quot;Unknown factorization method. Please choose from: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allowed_factorization_methods</span><span class="p">))</span>
+
+        <span class="n">allowed_solver_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;d-wave&quot;</span><span class="p">,</span> <span class="s2">&quot;classical-simulated-annealing&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;classical-steepest-descent&quot;</span><span class="p">,</span> <span class="s2">&quot;classsical-tabu-sampler&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;solver_method&quot;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;solver_method&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">allowed_solver_methods</span><span class="p">,</span> <span class="s2">&quot;Unknown solver method. Please choose from: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span>
+                <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">allowed_solver_methods</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;solver_method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;classical-simulated-annealing&quot;</span>
+
+        <span class="k">if</span> <span class="s2">&quot;random_state&quot;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span>
+
+        <span class="c1"># Set the specified model</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tensor_Train_Recursive&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tensor_Train_Recursive</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tensor_Train_Iterative&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tensor_Train_Iterative</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Hierarchical_Tucker</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tucker_Recursive&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tucker_Recursive</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tucker_Iterative&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Tucker_Iterative</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Matrix_Factorization&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Matrix_Factorization</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;solver_method&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;d-wave&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__generate_embeddings</span><span class="p">()</span>
+
+        <span class="c1"># class variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="QBTNs.fit"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">Rank</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the factors and score for a given factorization method of the input Tensor with the specified rank.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Tensor : numpy.array(dtype=bool)</span>
+<span class="sd">            Boolean numpy array with at least two dimensions.</span>
+<span class="sd">        Rank : Int</span>
+<span class="sd">            Rank of the factors. Rank &gt;= 2.</span>
+<span class="sd">            The size of the quantum annealing hardware limits the size of the rank.</span>
+<span class="sd">            For the LANL D-Wave 2000Q, the safe limit is rank 8,</span>
+<span class="sd">            although in some cases much higher rank factorization can be achieved.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Tensor must be at least 2 dimensional&quot;</span>
+        <span class="k">assert</span> <span class="n">Rank</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Rank must be greater than 2&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;Rank must be an integer&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Matrix_Factorization&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Rank</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
+            <span class="n">dimensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">ranks</span> <span class="o">=</span>  <span class="p">[</span><span class="n">Rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">))]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
+            <span class="n">dimensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">ranks</span> <span class="o">=</span>  <span class="p">[</span><span class="n">Rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">))]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)</span>
+
+        <span class="n">Tensor_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reconstructed_tensor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">get_hamming_distance</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor_prime</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QBTNs.get_score"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.get_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the hamming distance of the fitted factors to the original tensor</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Integer</span>
+<span class="sd">            Hamming distance between the input tensor and the factors found by the given algorithm.</span>
+<span class="sd">            The smaller the hamming distance is, the more accurate the factorization process was.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Fit the tensor first using pyQBTNs.QBTNs.fit().&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span></div>
+
+<div class="viewcode-block" id="QBTNs.get_factors"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.get_factors">[docs]</a>    <span class="k">def</span> <span class="nf">get_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns factors computed by the factorization algorithm.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        List or Dictionary or Tuple</span>
+<span class="sd">            returns some sort of data structure containing the computed factors.</span>
+<span class="sd">            Each factorization algorithm returns slightly different formats for the factors.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Fit the tensor first using pyQBTNs.QBTNs.fit().&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span></div>
+
+<div class="viewcode-block" id="QBTNs.get_reconstructed_tensor"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.get_reconstructed_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">get_reconstructed_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the boolean numpy array consstructed from the factors found by</span>
+<span class="sd">        the factorization algorithm.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.array(dtype=bool)</span>
+<span class="sd">            Boolean numpy array that has been recontructed from the computed factors.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Fit the tensor first using pyQBTNs.QBTNs.fit().&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tensor_Train_Recursive&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">reconstruct_TT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tensor_Train_Iterative&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">reconstruct_TT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">reconstruct_HT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tucker_Recursive&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">reconstruct_tucker</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Tucker_Iterative&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">reconstruct_tucker</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Matrix_Factorization&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span></div>
+
+    <span class="k">def</span> <span class="nf">__generate_embeddings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates all fixed embeddings that might be needed if the solver method is D-Wave.</span>
+<span class="sd">        The method only generates new embeddings if there is not already jsson embedding files</span>
+<span class="sd">        located at data/fixed_embeddings/ for the defualt QPU solver in the user&#39;s D-Wave</span>
+<span class="sd">        configuration file.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CLIQUE</span> <span class="o">=</span> <span class="mi">65</span>
+        <span class="n">small_clique_embeddings</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">solver_name</span> <span class="o">=</span> <span class="n">Start_DWave_connection</span><span class="p">()</span>
+        <span class="n">embedding_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;../data/fixed_embeddings/*.json&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;../data/fixed_embeddings/&quot;</span><span class="o">+</span><span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">CLIQUE</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_node_complete_embedding.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">embedding_files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating fixed embedding for a clique of size &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">CLIQUE</span><span class="p">)</span> <span class="o">+</span>
+                  <span class="s2">&quot; for solver &quot;</span><span class="o">+</span><span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;. This will take some time.&quot;</span><span class="p">)</span>
+            <span class="n">complete_embedding</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">minorminer</span><span class="o">.</span><span class="n">find_embedding</span><span class="p">(</span>
+                <span class="n">nx</span><span class="o">.</span><span class="n">complete_graph</span><span class="p">(</span><span class="n">CLIQUE</span><span class="p">),</span> <span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../data/fixed_embeddings/&quot;</span><span class="o">+</span><span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;_&quot;</span> <span class="o">+</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">CLIQUE</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_node_complete_embedding.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">complete_embedding</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="s2">&quot;../data/fixed_embeddings/&quot;</span><span class="o">+</span><span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;_size_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">small_clique_embeddings</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_clique_parallel_QA_embeddings.json&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">embedding_files</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating fixed embeddings for the parallel quantum annealing method for solver &quot;</span> <span class="o">+</span>
+                  <span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;. This will take some time.&quot;</span><span class="p">)</span>
+            <span class="n">subgraphs</span> <span class="o">=</span> <span class="n">iterative_embedding</span><span class="p">(</span><span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">small_clique_embeddings</span><span class="p">)</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../data/fixed_embeddings/&quot;</span><span class="o">+</span><span class="n">solver_name</span><span class="o">+</span><span class="s2">&quot;_size_&quot;</span> <span class="o">+</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">small_clique_embeddings</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_clique_parallel_QA_embeddings.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">subgraphs</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LANL.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

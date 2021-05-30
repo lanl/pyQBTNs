@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyQBTNs.src.Hierarchical_Tucker &mdash; pyQBTNs 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyQBTNs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../QBTNs.html">pyQBTNs.QBTNs API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyQBTNs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyQBTNs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyQBTNs.src.Hierarchical_Tucker</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyQBTNs.src.Hierarchical_Tucker</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.tensor_utils</span> <span class="kn">import</span> <span class="n">split_HT</span>
+<span class="kn">from</span> <span class="nn">.Matrix_Factorization</span> <span class="kn">import</span> <span class="n">Matrix_Factorization</span>
+
+
+<div class="viewcode-block" id="Hierarchical_Tucker"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Hierarchical_Tucker.Hierarchical_Tucker">[docs]</a><span class="k">class</span> <span class="nc">Hierarchical_Tucker</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        **parameters : dictionary</span>
+<span class="sd">            Passed from pyQBTNs from initialization.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MF</span> <span class="o">=</span> <span class="n">Matrix_Factorization</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Hierarchical_Tucker.train"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Hierarchical_Tucker.Hierarchical_Tucker.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">ranks</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Factor the input tensor using the Tucker_Recursive algorithm</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        T : numpy array</span>
+<span class="sd">            Tensor to be factored.</span>
+<span class="sd">        dimensions : list</span>
+<span class="sd">            tensor dimensions.</span>
+<span class="sd">        ranks : list</span>
+<span class="sd">            factorization ranks.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        HT : dictionary</span>
+<span class="sd">            dictionary of factors.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">HT</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="nb">ord</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># the top rank of core</span>
+        <span class="n">d1</span><span class="p">,</span> <span class="n">dims1</span> <span class="o">=</span> <span class="n">split_HT</span><span class="p">(</span><span class="n">dimensions</span><span class="o">+</span><span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">d2</span><span class="p">,</span> <span class="n">dims2</span> <span class="o">=</span> <span class="n">split_HT</span><span class="p">(</span><span class="n">dimensions</span><span class="o">+</span><span class="p">[</span><span class="n">q</span><span class="p">],</span> <span class="nb">range</span><span class="p">(</span><span class="nb">ord</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span> <span class="nb">ord</span><span class="p">))</span>
+        <span class="n">reshaped_M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">))</span>
+        <span class="n">r_left</span>  <span class="o">=</span> <span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="n">M1</span><span class="p">,</span> <span class="n">M2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MF</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">reshaped_M</span><span class="p">,</span> <span class="n">r_left</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims1</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span> <span class="c1">#HT type node</span>
+            <span class="n">HT1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">M1</span><span class="p">,</span><span class="n">dims1</span><span class="o">+</span><span class="p">[</span><span class="n">r_left</span><span class="p">]),</span> <span class="n">dims1</span><span class="p">,</span> <span class="n">ranks</span><span class="o">+</span><span class="p">[</span><span class="n">r_left</span><span class="p">])</span>
+            <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># matrix</span>
+            <span class="n">HT1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">M1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HT1</span>
+        <span class="n">M2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">M2</span><span class="p">,[</span><span class="n">r_left</span><span class="p">]</span><span class="o">+</span><span class="n">dims2</span><span class="p">)</span>
+        <span class="n">M2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">M2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">d3</span> <span class="o">=</span> <span class="n">r_left</span><span class="o">*</span><span class="n">q</span>
+        <span class="n">M3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">M2</span> <span class="p">,</span> <span class="p">(</span><span class="n">d3</span> <span class="p">,</span> <span class="n">d2</span><span class="o">//</span><span class="n">q</span><span class="p">))</span>
+        <span class="n">r_right</span>  <span class="o">=</span> <span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="n">M31</span><span class="p">,</span> <span class="n">M32</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MF</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">M3</span><span class="p">,</span> <span class="n">r_right</span><span class="p">)</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="n">M31</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">r_left</span><span class="p">,</span> <span class="n">r_right</span><span class="p">)</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">core</span>
+        <span class="n">dims2</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">M32</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">M32</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">HT2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">M32</span><span class="p">,</span><span class="n">dims2</span><span class="o">+</span><span class="p">[</span><span class="n">r_left</span><span class="p">]),</span> <span class="n">dims2</span><span class="p">,</span> <span class="n">ranks</span><span class="o">+</span><span class="p">[</span><span class="n">r_left</span><span class="p">])</span>
+            <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">HT2</span> <span class="o">=</span> <span class="n">M32</span>
+            <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HT2</span>
+        <span class="k">return</span> <span class="n">HT</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LANL.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

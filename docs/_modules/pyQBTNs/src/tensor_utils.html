@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pyQBTNs.src.tensor_utils &mdash; pyQBTNs 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> pyQBTNs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../QBTNs.html">pyQBTNs.QBTNs API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pyQBTNs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pyQBTNs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>pyQBTNs.src.tensor_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pyQBTNs.src.tensor_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
+
+
+<div class="viewcode-block" id="reconstruct_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_TT">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_TT</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs a tensor given an input of factors generated from running the Tensor Train algorithm.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    factors : list</span>
+<span class="sd">        list of matrices.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prod : numpy array</span>
+<span class="sd">        reconstructed tensor.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M1</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">M1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prod</span></div>
+
+
+<div class="viewcode-block" id="reconstruct_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_HT">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_HT</span><span class="p">(</span><span class="n">HT</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs a tensor given an input of factors generated from running the</span>
+<span class="sd">    Hierarchical Tucker algorithm.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    HT : dictionary</span>
+<span class="sd">        factors from Hierarchical Tucker algorithm.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prod : numpy array</span>
+<span class="sd">        tensor.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">]</span>
+    <span class="n">HT1</span> <span class="o">=</span> <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span>
+    <span class="n">HT2</span> <span class="o">=</span> <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;HT&#39;</span><span class="p">:</span>
+        <span class="n">HT1</span> <span class="o">=</span> <span class="n">reconstruct_HT</span><span class="p">(</span><span class="n">HT1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;HT&#39;</span><span class="p">:</span>
+        <span class="n">HT2</span> <span class="o">=</span> <span class="n">reconstruct_HT</span><span class="p">(</span><span class="n">HT2</span><span class="p">)</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">HT1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">HT2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prod</span></div>
+
+<div class="viewcode-block" id="construct_HT_recursive"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT_recursive">[docs]</a><span class="k">def</span> <span class="nf">construct_HT_recursive</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    ranks : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    p : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    HT : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coreDims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">coreDims</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">HT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;core&#39;</span><span class="p">:</span> <span class="n">core</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[:</span><span class="n">l</span><span class="p">],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="n">l</span><span class="p">:],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">HT</span></div>
+
+<div class="viewcode-block" id="construct_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT">[docs]</a><span class="k">def</span> <span class="nf">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    ranks : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    p : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    T : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HT</span> <span class="o">=</span> <span class="n">construct_HT_recursive</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">reconstruct_HT</span><span class="p">(</span><span class="n">HT</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+<div class="viewcode-block" id="reconstruct_tucker"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_tucker">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_tucker</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs a tensor given an input of factors generated from running the Tucker algorithm.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    core : numpy array</span>
+<span class="sd">        core tensor.</span>
+<span class="sd">    factors : list</span>
+<span class="sd">        list of matrices.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prod : numpy array</span>
+<span class="sd">        tensor.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prod</span> <span class="o">=</span> <span class="n">core</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)):</span>
+        <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prod</span></div>
+
+
+<div class="viewcode-block" id="construct_tucker_tensor"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_tucker_tensor">[docs]</a><span class="k">def</span> <span class="nf">construct_tucker_tensor</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    ranks : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    p : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    random_state : TYPE, optional</span>
+<span class="sd">        DESCRIPTION. The default is 42.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ranks</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ranks</span><span class="p">)):</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+        <span class="n">factors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">,</span> <span class="n">reconstruct_tucker</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="split_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.split_HT">[docs]</a><span class="k">def</span> <span class="nf">split_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    rng : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dim : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    list</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">:</span>
+        <span class="n">dim</span> <span class="o">*=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dim</span><span class="p">,</span> <span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="split_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.split_TT">[docs]</a><span class="k">def</span> <span class="nf">split_TT</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    ranks : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    rng : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dim : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    list</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    list</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">:</span>
+        <span class="n">dim</span> <span class="o">*=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dim</span><span class="p">,</span> <span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">],</span> <span class="p">[</span><span class="n">ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="split_tucker"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.split_tucker">[docs]</a><span class="k">def</span> <span class="nf">split_tucker</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    ranks : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    rng : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dim : TYPE</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    list</span>
+<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    list</span>
+<span class="sd">        DESCRIPTION.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">:</span>
+        <span class="n">dim</span> <span class="o">*=</span> <span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dim</span><span class="p">,</span> <span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">],</span> <span class="p">[</span><span class="n">ranks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, LANL.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
