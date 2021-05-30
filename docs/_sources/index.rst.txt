@@ -93,7 +93,7 @@ How to Cite pyQBTNs?
       year = {2021},
       publisher = {GitHub},
       journal = {GitHub repository},
-      doi = {10.5281/zenodo.???????},
+      doi = {10.5281/zenodo.4876527},
       howpublished = {\url{https://github.com/lanl/pyQBTNs}}
     }
 
