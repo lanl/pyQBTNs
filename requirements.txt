@@ -1,4 +1,4 @@
-decorator==4.4.2
+decorator==4.3.0
 dwave-ocean-sdk>=3.3.0
 numpy==1.19.2
 tensorly>=0.4.5
