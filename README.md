@@ -49,17 +49,38 @@ python -m unittest TestMatrixFactorizationQuantum.py
 
 ## Example Usage
 ```python
-import numpy as np
+
 from pyQBTNs import QBTNs
+import numpy as np
 
-qbtns = QBTNs(factorization_method="Matrix_Factorization")
+qbtns = QBTNs(factorization_method="Matrix_Factorization", solver_method="classical-simulated-annealing")
 
-X = np.random.choice(a=[False, True], size=(10, 10))
+p = 0.7 ### Bernoulli boolean density parameter
+N1 = 10 ### Dimension 1
+N2 = 10 ### Dimension 2
+RANK = 3 ### Factorization rank
 
-qbtns.fit(X, 2)
+np.random.seed(42)
+A = np.random.choice(a=[False, True], size=(N1, RANK), p=[p, 1-p])
+B = np.random.choice(a=[False, True], size=(RANK, N2), p=[p, 1-p])
+X = np.matmul(A, B)
 
-score = qbtns.get_score()
-print(score)
+print("A =", A)
+print("B =", B)
+print("X =", X)
+
+print("X dimensions =", X.shape)
+
+qbtns.fit(X, RANK)
+
+print("Hamming distance =", qbtns.get_score())
+
+A_prime, B_prime = qbtns.get_factors()
+print("A_prime =", A_prime)
+print("B_prime =", B_prime)
+
+print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
+
 ```
 
 ## Prerequisites
@@ -68,13 +89,12 @@ print(score)
 - dwave-ocean-sdk>=3.3.0
 - numpy==1.19.2
 - tensorly>=0.4.5
-- sympy==1.7.1
-- networkx>=2.5
+- sympy>=1.7.1
+- networkx==2.5
 - nimfa>=1.4.0
 - scikit-learn==0.24.1
 - matplotlib>=3.4.2
 - Pillow>=8.2.0
-
 
 ## How to Cite pyQBTNs?
 ```latex
