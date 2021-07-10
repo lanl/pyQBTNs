@@ -13,3 +13,5 @@ The Classical examples will run locally on your device without the need for any 
 * [Tucker Iterative Using Simulated Annealing](tucker_iterative_simulated_annealing.py)
 * [Tucker Recursive Using Simulated Annealing](tucker_recursive_simulated_annealing.py)
 * [Hierarchical Tucker Using Simulated Annealing](hierarchical_tucker_simulated_annealing.py)
+* [Tensor Train Iterative Using Simulated Annealing](tensor_train_iterative_simulated_annealing.py)
+* [Tensor Train Recursive Using Simulated Annealing](tensor_train_recursive_simulated_annealing.py)
