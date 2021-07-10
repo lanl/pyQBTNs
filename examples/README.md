@@ -12,3 +12,4 @@ The Classical examples will run locally on your device without the need for any 
 * [Boolean Matrix Factorization Using Tabu Sampler](matrix_factorization_tabu_sampler.py)
 * [Tucker Iterative Using Simulated Annealing](tucker_iterative_simulated_annealing.py)
 * [Tucker Recursive Using Simulated Annealing](tucker_recursive_simulated_annealing.py)
+* [Hierarchical Tucker Using Simulated Annealing](hierarchical_tucker_simulated_annealing.py)
