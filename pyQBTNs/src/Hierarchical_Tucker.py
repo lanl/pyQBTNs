@@ -37,7 +37,7 @@ class Hierarchical_Tucker():
         Returns
         -------
         HT : dictionary
-            dictionary of factors.
+            dictionary of the tensor.
 
         """
 

@@ -55,42 +55,10 @@ def reconstruct_HT(HT):
     prod = tl.tenalg.contract(prod, 1, HT2, 0)
     return prod
 
-def construct_HT_recursive(dims, ranks, p):
-    """
 
-
-    Parameters
-    ----------
-    dims : TYPE
-        DESCRIPTION.
-    ranks : TYPE
-        DESCRIPTION.
-    p : TYPE
-        DESCRIPTION.
-
-    Returns
-    -------
-    HT : TYPE
-        DESCRIPTION.
-
-    """
-    coreDims = [ranks.pop(),ranks.pop(),ranks.pop()]
-    l = len(dims)//2
-    core = np.random.choice(a=[False, True], size=coreDims, p=[p, 1-p])
-    HT = {'core': core}
-    if len(dims) >= 4:
-        HT['child1type'] = 'HT'
-        HT['child1'] = construct_HT(dims[:l], ranks + [coreDims[1]], p)
-    else:
-        HT['child1type'] = 'M'
-        HT['child1'] = np.random.choice(a=[False, True], size=[coreDims[1],dims[0]], p=[p, 1-p])
-    if len(dims) >= 3:
-        HT['child2type'] = 'HT'
-        HT['child2'] = construct_HT(dims[l:], ranks + [coreDims[2]], p)
-    else:
-        HT['child2type'] = 'M'
-        HT['child2'] = np.random.choice(a=[False, True], size=[coreDims[2],dims[1]], p=[p, 1-p])
-    return HT
+def boolArray(l, p):
+        t = np.random.choice(a=[False, True], size=l, p=[p, 1-p])
+        return t
 
 def construct_HT(dims, ranks, p):
     """
@@ -111,10 +79,23 @@ def construct_HT(dims, ranks, p):
         DESCRIPTION.
 
     """
-    HT = construct_HT_recursive(dims, ranks+[1], p)
-    T = reconstruct_HT(HT)
-    T = np.reshape(T, dims)
-    return T
+    coreDims = [ranks.pop(),ranks.pop(),ranks.pop()]
+    l = len(dims)//2
+    core = boolArray(coreDims, p)
+    HT = {'core': core}
+    if len(dims) >= 4:
+        HT['child1type'] = 'HT'
+        HT['child1'] = construct_HT(dims[:l], ranks + [coreDims[1]], p)
+    else:
+        HT['child1type'] = 'M'
+        HT['child1'] = boolArray([coreDims[1],dims[0]], p)
+    if len(dims) >= 3:
+        HT['child2type'] = 'HT'
+        HT['child2'] = construct_HT(dims[l:], ranks + [coreDims[2]], p)
+    else:
+        HT['child2type'] = 'M'
+        HT['child2'] = boolArray([coreDims[2],dims[1]], p)
+    return HT
 
 def reconstruct_tucker(core, factors):
     """

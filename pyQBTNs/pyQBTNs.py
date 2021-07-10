@@ -1,6 +1,6 @@
 """
-This software was developed as a tool to factor tensors using quantum annealers. 
-Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks. 
+This software was developed as a tool to factor tensors using quantum annealers.
+Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks.
 
 The software allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve during the factorization algorithm.
 
@@ -94,7 +94,7 @@ class QBTNs():
         self.latent_factors = None
         self.reconstructed_tensor = None
 
-    def fit(self, Tensor, Rank):
+    def fit(self, Tensor, Rank, **parameters):
         """
         Computes the factors and score for a given factorization method of the input Tensor with the specified rank.
 
@@ -108,12 +108,19 @@ class QBTNs():
             For the LANL D-Wave 2000Q, the safe limit is rank 8,
             although in some cases much higher rank factorization can be achieved.
 
+        dimensions : list, optional
+            Optional argument which supplies the tensor dimensions. Required for Hierarchical tucker because the input is a dict of an HT structure
+
+        ranks : list, optional
+            Optional argument which supplies the tensor factorization ranks. Required for Hierarchical tucker
+
+
         Returns
         -------
         None.
 
         """
-
+        #if self.method != "Hierarchical_Tucker":
         assert len(Tensor.shape) > 1, "Tensor must be at least 2 dimensional"
         assert Rank > 1, "Rank must be greater than 2"
         assert isinstance(Rank, int), "Rank must be an integer"
@@ -125,9 +132,13 @@ class QBTNs():
             ranks =  [Rank for i in range(len(dimensions))]
             self.latent_factors = self.model.train(Tensor, dimensions, ranks)
         elif self.method == "Hierarchical_Tucker":
-            dimensions = list(Tensor.shape)
-            ranks =  [Rank for i in range(2*len(dimensions))]
-            self.latent_factors = self.model.train(Tensor, dimensions, ranks)
+            assert 'dimensions' in parameters, "dimensions must be specified for HT"
+            assert 'ranks' in parameters, "ranks must be specified for HT"
+            assert isinstance(parameters['dimensions'], list), "dimensions must be a list"
+            assert isinstance(parameters['ranks'], list), "ranks must be a list"
+            #assert isinstance(Tensor, dict), "Tensor must be a dict"
+
+            self.latent_factors = self.model.train(Tensor, parameters['dimensions'], parameters['ranks'])
 
         Tensor_prime = self.get_reconstructed_tensor()
         self.score = get_hamming_distance(Tensor, Tensor_prime)
