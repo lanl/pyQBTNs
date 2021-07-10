@@ -214,7 +214,7 @@ Right now this software includes 5 different tensor factorization methods, makin
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rank</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/pyQBTNs.html#QBTNs.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rank</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/pyQBTNs.html#QBTNs.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Computes the factors and score for a given factorization method of the input Tensor with the specified rank.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -224,6 +224,8 @@ Right now this software includes 5 different tensor factorization methods, makin
 The size of the quantum annealing hardware limits the size of the rank.
 For the LANL D-Wave 2000Q, the safe limit is rank 8,
 although in some cases much higher rank factorization can be achieved.</p></li>
+<li><p><strong>dimensions</strong> (<em>list</em><em>, </em><em>optional</em>) – Optional argument which supplies the tensor dimensions. Required for Hierarchical tucker because the input is a dict of an HT structure</p></li>
+<li><p><strong>ranks</strong> (<em>list</em><em>, </em><em>optional</em>) – Optional argument which supplies the tensor factorization ranks. Required for Hierarchical tucker</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

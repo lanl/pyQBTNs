@@ -159,7 +159,49 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
+<div class="viewcode-block" id="construct_tensor_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_tensor_TT">[docs]</a><span class="k">def</span> <span class="nf">construct_tensor_TT</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Constructs a tensor train tensor</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dimensions : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    RANK : int</span>
+<span class="sd">        factorization rank.</span>
+<span class="sd">    p : float</span>
+<span class="sd">        bernoulli proportion of True and False elements.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    reconstruct_TT(TT_list) : numpy array</span>
+<span class="sd">        reconstructed Tensor Train tensor.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TT_list = []</span>
+<span class="sd">    M1 = np.random.choice(a=[False, True], size=(dimensions[0], RANK), p=[p, 1-p])</span>
+<span class="sd">    TT_list.append(M1)</span>
+
+<span class="sd">    for idx in range(1, len(dimensions)-1):</span>
+<span class="sd">        print(idx)</span>
+<span class="sd">        T_ = np.random.choice(a=[False, True], size=(RANK, dimensions[idx], RANK), p=[p, 1-p])</span>
+<span class="sd">        TT_list.append(T_)</span>
+
+<span class="sd">    M_end = np.random.choice(a=[False, True], size=(RANK, dimensions[len(dimensions)-1]), p=[p, 1-p])</span>
+<span class="sd">    TT_list.append(M_end)</span>
+<span class="sd">    print(TT_list)</span>
+<span class="sd">    return reconstruct_TT(TT_list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n3</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">n4</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">M1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">T3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">M4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n4</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">reconstruct_TT</span><span class="p">([</span><span class="n">M1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">M4</span><span class="p">])</span></div>
 <div class="viewcode-block" id="reconstruct_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_TT">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_TT</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reconstructs a tensor given an input of factors generated from running the Tensor Train algorithm.</span>
@@ -213,42 +255,10 @@
     <span class="n">prod</span> <span class="o">=</span> <span class="n">tl</span><span class="o">.</span><span class="n">tenalg</span><span class="o">.</span><span class="n">contract</span><span class="p">(</span><span class="n">prod</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">HT2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">prod</span></div>
 
-<div class="viewcode-block" id="construct_HT_recursive"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT_recursive">[docs]</a><span class="k">def</span> <span class="nf">construct_HT_recursive</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
 
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    ranks : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    p : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    HT : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coreDims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
-    <span class="n">core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">coreDims</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="n">HT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;core&#39;</span><span class="p">:</span> <span class="n">core</span><span class="p">}</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[:</span><span class="n">l</span><span class="p">],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="n">l</span><span class="p">:],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
-        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">HT</span></div>
+<div class="viewcode-block" id="boolArray"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.boolArray">[docs]</a><span class="k">def</span> <span class="nf">boolArray</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">t</span></div>
 
 <div class="viewcode-block" id="construct_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT">[docs]</a><span class="k">def</span> <span class="nf">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -269,10 +279,23 @@
 <span class="sd">        DESCRIPTION.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">HT</span> <span class="o">=</span> <span class="n">construct_HT_recursive</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">)</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">reconstruct_HT</span><span class="p">(</span><span class="n">HT</span><span class="p">)</span>
-    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">T</span></div>
+    <span class="n">coreDims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">core</span> <span class="o">=</span> <span class="n">boolArray</span><span class="p">(</span><span class="n">coreDims</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+    <span class="n">HT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;core&#39;</span><span class="p">:</span> <span class="n">core</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[:</span><span class="n">l</span><span class="p">],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">boolArray</span><span class="p">([</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;HT&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="n">l</span><span class="p">:],</span> <span class="n">ranks</span> <span class="o">+</span> <span class="p">[</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;M&#39;</span>
+        <span class="n">HT</span><span class="p">[</span><span class="s1">&#39;child2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">boolArray</span><span class="p">([</span><span class="n">coreDims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HT</span></div>
 
 <div class="viewcode-block" id="reconstruct_tucker"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_tucker">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_tucker</span><span class="p">(</span><span class="n">core</span><span class="p">,</span> <span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

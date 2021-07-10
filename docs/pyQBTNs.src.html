@@ -199,7 +199,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>HT</strong> – dictionary of factors.</p>
+<dd class="field-even"><p><strong>HT</strong> – dictionary of the tensor.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>dictionary</p>
@@ -645,6 +645,11 @@ i.e. each column factorization problem is solved sequentially.</p>
 <div class="section" id="module-pyQBTNs.src.tensor_utils">
 <span id="pyqbtns-src-tensor-utils-module"></span><h2>pyQBTNs.src.tensor_utils module<a class="headerlink" href="#module-pyQBTNs.src.tensor_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="pyQBTNs.src.tensor_utils.boolArray">
+<span class="sig-prename descclassname"><span class="pre">pyQBTNs.src.tensor_utils.</span></span><span class="sig-name descname"><span class="pre">boolArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/src/tensor_utils.html#boolArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyQBTNs.src.tensor_utils.boolArray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pyQBTNs.src.tensor_utils.construct_HT">
 <span class="sig-prename descclassname"><span class="pre">pyQBTNs.src.tensor_utils.</span></span><span class="sig-name descname"><span class="pre">construct_HT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/src/tensor_utils.html#construct_HT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyQBTNs.src.tensor_utils.construct_HT" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
@@ -665,21 +670,22 @@ i.e. each column factorization problem is solved sequentially.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pyQBTNs.src.tensor_utils.construct_HT_recursive">
-<span class="sig-prename descclassname"><span class="pre">pyQBTNs.src.tensor_utils.</span></span><span class="sig-name descname"><span class="pre">construct_HT_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ranks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/src/tensor_utils.html#construct_HT_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyQBTNs.src.tensor_utils.construct_HT_recursive" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="pyQBTNs.src.tensor_utils.construct_tensor_TT">
+<span class="sig-prename descclassname"><span class="pre">pyQBTNs.src.tensor_utils.</span></span><span class="sig-name descname"><span class="pre">construct_tensor_TT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RANK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/src/tensor_utils.html#construct_tensor_TT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyQBTNs.src.tensor_utils.construct_tensor_TT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a tensor train tensor</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dims</strong> (<em>TYPE</em>) – DESCRIPTION.</p></li>
-<li><p><strong>ranks</strong> (<em>TYPE</em>) – DESCRIPTION.</p></li>
-<li><p><strong>p</strong> (<em>TYPE</em>) – DESCRIPTION.</p></li>
+<li><p><strong>dimensions</strong> (<em>list</em>) – list of dimensions.</p></li>
+<li><p><strong>RANK</strong> (<em>int</em>) – factorization rank.</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – bernoulli proportion of True and False elements.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>HT</strong> – DESCRIPTION.</p>
+<dd class="field-even"><p><strong>reconstruct_TT(TT_list)</strong> – reconstructed Tensor Train tensor.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>TYPE</p>
+<dd class="field-odd"><p>numpy array</p>
 </dd>
 </dl>
 </dd></dl>

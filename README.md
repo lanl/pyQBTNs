@@ -6,7 +6,7 @@
 
 </div>
 
-pyQBTNs was developed as a tool python to factor boolean tensors (or matrices) using D-Wave quantum annealers. The methodologies for pyQBTNs are described in [1] and [2]. 
+pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are described in [1] and [2]. 
 
 pyQBTNs includes five different boolean tensor factorization methods, making up three distinct types of tensor networks. 
 pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm.
