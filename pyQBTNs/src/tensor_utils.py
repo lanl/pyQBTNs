@@ -1,7 +1,49 @@
 import numpy as np
 import tensorly as tl
 
+def construct_tensor_TT(dimensions, RANK, p):
+    """
+    Constructs a tensor train tensor
 
+    Parameters
+    ----------
+    dimensions : list
+        list of dimensions.
+    RANK : int
+        factorization rank.
+    p : float
+        bernoulli proportion of True and False elements.
+
+    Returns
+    -------
+    reconstruct_TT(TT_list) : numpy array
+        reconstructed Tensor Train tensor.
+
+    """
+    """
+    TT_list = []
+    M1 = np.random.choice(a=[False, True], size=(dimensions[0], RANK), p=[p, 1-p])
+    TT_list.append(M1)
+
+    for idx in range(1, len(dimensions)-1):
+        print(idx)
+        T_ = np.random.choice(a=[False, True], size=(RANK, dimensions[idx], RANK), p=[p, 1-p])
+        TT_list.append(T_)
+
+    M_end = np.random.choice(a=[False, True], size=(RANK, dimensions[len(dimensions)-1]), p=[p, 1-p])
+    TT_list.append(M_end)
+    print(TT_list)
+    return reconstruct_TT(TT_list)
+    """
+    n1 = dimensions[0]
+    n2 = dimensions[1]
+    n3 = dimensions[2]
+    n4 = dimensions[3]
+    M1 = np.random.choice(a=[False, True], size=(n1, RANK), p=[p, 1-p])
+    T2 = np.random.choice(a=[False, True], size=(RANK, n2, RANK), p=[p, 1-p])
+    T3 = np.random.choice(a=[False, True], size=(RANK, n3, RANK), p=[p, 1-p])
+    M4 = np.random.choice(a=[False, True], size=(RANK, n4), p=[p, 1-p])
+    return reconstruct_TT([M1, T2, T3, M4])
 def reconstruct_TT(factors):
     """
     Reconstructs a tensor given an input of factors generated from running the Tensor Train algorithm.

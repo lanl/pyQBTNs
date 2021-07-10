@@ -120,7 +120,6 @@ class QBTNs():
         None.
 
         """
-        #if self.method != "Hierarchical_Tucker":
         assert len(Tensor.shape) > 1, "Tensor must be at least 2 dimensional"
         assert Rank > 1, "Rank must be greater than 2"
         assert isinstance(Rank, int), "Rank must be an integer"
@@ -129,14 +128,13 @@ class QBTNs():
             self.latent_factors = self.model.train(Tensor, Rank)
         elif self.method != "Hierarchical_Tucker":
             dimensions = list(Tensor.shape)
-            ranks =  [Rank for i in range(len(dimensions))]
+            ranks = [Rank for i in range(len(dimensions))]
             self.latent_factors = self.model.train(Tensor, dimensions, ranks)
         elif self.method == "Hierarchical_Tucker":
             assert 'dimensions' in parameters, "dimensions must be specified for HT"
             assert 'ranks' in parameters, "ranks must be specified for HT"
             assert isinstance(parameters['dimensions'], list), "dimensions must be a list"
             assert isinstance(parameters['ranks'], list), "ranks must be a list"
-            #assert isinstance(Tensor, dict), "Tensor must be a dict"
 
             self.latent_factors = self.model.train(Tensor, parameters['dimensions'], parameters['ranks'])
 
