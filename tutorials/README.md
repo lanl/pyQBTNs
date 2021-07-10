@@ -16,7 +16,7 @@
     ```
 
 2. Sign up with [D-Wave Leap](https://cloud.dwavesys.com/leap/signup/).
-    - Make sure that you have at least 1 minute of QPU time on your free acccount.
+    - Make sure that you have at least 1 minute of QPU time on your free acccount. This is the default amount of QPU time given by D-Wave for free accounts. You may need to supply a developer github which makes use of D-Wave Leap for your project as part of this setup process. 
 3. Set up [D-Wave config file](https://docs.ocean.dwavesys.com/en/stable/overview/sapi.html):
     - Configuration file can be created using the command line tool. It will prompt several questions:
     ```shell
@@ -38,7 +38,7 @@
     API endpoint URL [skip]: https://cloud.dwavesys.com/sapi/
     ```
     
-    - Next, it will prompt for authentication token. Your token can be found in *D-Wave* dashboard under *API Token*:
+    - Next, it will prompt for an authentication token. Your token can be found in *D-Wave* dashboard under *API Token*:
     ```shell
     Authentication token [skip]:TOKEN
     ```
@@ -52,7 +52,7 @@
     ```shell
     Default client class [skip]: DW_2000Q_6
     ```
-4. Run an example (download the exampe from [here](../tests/TestMatrixFactorizationQuantum.py)):
+4. Run an example (download the example from [here](../tests/TestMatrixFactorizationQuantum.py)):
 ```shell
 python -m unittest TestMatrixFactorizationQuantum.py
 ```
