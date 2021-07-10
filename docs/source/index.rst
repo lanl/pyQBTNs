@@ -6,8 +6,11 @@
 Welcome to pyQBTNs's documentation!
 ===================================
 
-This software was developed as a tool to factor tensors using quantum annealers. 
-Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks. The software allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve during the factorization algorithm. The methodology used in pyQBTNs was introduced in :cite:p:`pelofske2021boolean`.
+pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are described in :cite:p:`pelofske2021boolean` and :cite:p:`Daniel2020`. 
+
+pyQBTNs includes five different boolean tensor factorization methods, making up three distinct types of tensor networks. pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm.
+
+In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)
 
 Resources
 ========================================
@@ -48,24 +51,43 @@ Setup and Verify D-Wave connection
 
 .. note::
 
-    For more detailed description of the D-Wave setup process see the `tutorials <https://github.com/lanl/pyQBTNs/tree/main/tutorials>`_ or the `example notebook on D-Wave <https://github.com/lanl/pyQBTNs/blob/main/examples/D-Wave.ipynb>`_.
+    For more detailed description of the D-Wave setup process see the `tutorials <https://github.com/lanl/pyQBTNs/tree/main/tutorials>`_ or the `example notebook on D-Wave <https://github.com/MaksimEkin/pyQBTNs/blob/main/examples/D-Wave_matrix_factorization.ipynb>`_.
 
 
 Example Usage
 ========================================
 .. code-block:: python
 
-    import numpy as np
     from pyQBTNs import QBTNs
+    import numpy as np
 
-    qbtns = QBTNs(factorization_method="Matrix_Factorization")
+    qbtns = QBTNs(factorization_method="Matrix_Factorization", solver_method="classical-simulated-annealing")
 
-    X = np.random.choice(a=[False, True], size=(10, 10))
+    p = 0.7 ### Bernoulli boolean density parameter
+    N1 = 10 ### Dimension 1
+    N2 = 10 ### Dimension 2
+    RANK = 3 ### Factorization rank
 
-    qbtns.fit(X, 2)
+    np.random.seed(42)
+    A = np.random.choice(a=[False, True], size=(N1, RANK), p=[p, 1-p])
+    B = np.random.choice(a=[False, True], size=(RANK, N2), p=[p, 1-p])
+    X = np.matmul(A, B)
 
-    score = qbtns.get_score()
-    print(score)
+    print("A =", A)
+    print("B =", B)
+    print("X =", X)
+
+    print("X dimensions =", X.shape)
+
+    qbtns.fit(X, RANK)
+
+    print("Hamming distance =", qbtns.get_score())
+
+    A_prime, B_prime = qbtns.get_factors()
+    print("A_prime =", A_prime)
+    print("B_prime =", B_prime)
+
+    print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
 
 
 Prerequisites
@@ -75,8 +97,8 @@ Prerequisites
 * dwave-ocean-sdk>=3.3.0
 * numpy==1.19.2
 * tensorly>=0.4.5
-* sympy==1.7.1
-* networkx>=2.5
+* sympy>=1.7.1
+* networkx==2.5
 * nimfa>=1.4.0
 * scikit-learn==0.24.1
 * matplotlib>=3.4.2
@@ -113,7 +135,6 @@ Authors
 - `Hristo Djidjev <mailto:djidjev@lanl.gov>`_ : Information Sciences, Los Alamos National Laboratory
 - `Dan O'Malley <mailto:omalled@lanl.gov>`_ : Computational Earth Science, Los Alamos National Laboratory
 - `Maksim Ekin Eren <mailto:maksim@lanl.gov>`_ : Advanced Research in Cyber Systems, Los Alamos National Laboratory
-- Georg Hahn
 - `Boian S. Alexandrov <mailto:boian@lanl.gov>`_ : Theoretical Division, Los Alamos National Laboratory
 
 

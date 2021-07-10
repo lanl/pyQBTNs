@@ -157,8 +157,8 @@
             
   <h1>Source code for pyQBTNs.pyQBTNs</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This software was developed as a tool to factor tensors using quantum annealers. </span>
-<span class="sd">Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks. </span>
+<span class="sd">This software was developed as a tool to factor tensors using quantum annealers.</span>
+<span class="sd">Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks.</span>
 
 <span class="sd">The software allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve during the factorization algorithm.</span>
 
@@ -252,7 +252,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reconstructed_tensor</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="QBTNs.fit"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">Rank</span><span class="p">):</span>
+<div class="viewcode-block" id="QBTNs.fit"><a class="viewcode-back" href="../../pyQBTNs.html#pyQBTNs.pyQBTNs.QBTNs.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">Rank</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the factors and score for a given factorization method of the input Tensor with the specified rank.</span>
 
@@ -266,12 +266,18 @@
 <span class="sd">            For the LANL D-Wave 2000Q, the safe limit is rank 8,</span>
 <span class="sd">            although in some cases much higher rank factorization can be achieved.</span>
 
+<span class="sd">        dimensions : list, optional</span>
+<span class="sd">            Optional argument which supplies the tensor dimensions. Required for Hierarchical tucker because the input is a dict of an HT structure</span>
+
+<span class="sd">        ranks : list, optional</span>
+<span class="sd">            Optional argument which supplies the tensor factorization ranks. Required for Hierarchical tucker</span>
+
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        None.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Tensor must be at least 2 dimensional&quot;</span>
         <span class="k">assert</span> <span class="n">Rank</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Rank must be greater than 2&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Rank</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;Rank must be an integer&quot;</span>
@@ -280,12 +286,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Rank</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
             <span class="n">dimensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="n">ranks</span> <span class="o">=</span>  <span class="p">[</span><span class="n">Rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">))]</span>
+            <span class="n">ranks</span> <span class="o">=</span> <span class="p">[</span><span class="n">Rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">))]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;Hierarchical_Tucker&quot;</span><span class="p">:</span>
-            <span class="n">dimensions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Tensor</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="n">ranks</span> <span class="o">=</span>  <span class="p">[</span><span class="n">Rank</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">))]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">ranks</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="s1">&#39;dimensions&#39;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">,</span> <span class="s2">&quot;dimensions must be specified for HT&quot;</span>
+            <span class="k">assert</span> <span class="s1">&#39;ranks&#39;</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">,</span> <span class="s2">&quot;ranks must be specified for HT&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">),</span> <span class="s2">&quot;dimensions must be a list&quot;</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;ranks&#39;</span><span class="p">],</span> <span class="nb">list</span><span class="p">),</span> <span class="s2">&quot;ranks must be a list&quot;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">latent_factors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">],</span> <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;ranks&#39;</span><span class="p">])</span>
 
         <span class="n">Tensor_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reconstructed_tensor</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">score</span> <span class="o">=</span> <span class="n">get_hamming_distance</span><span class="p">(</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor_prime</span><span class="p">)</span></div>

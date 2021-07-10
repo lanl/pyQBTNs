@@ -160,8 +160,9 @@
             
   <div class="section" id="welcome-to-pyqbtns-s-documentation">
 <h1>Welcome to pyQBTNs’s documentation!<a class="headerlink" href="#welcome-to-pyqbtns-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This software was developed as a tool to factor tensors using quantum annealers.
-Right now this software includes 5 different tensor factorization methods, making up three distinct types of tensor networks. The software allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve during the factorization algorithm. The methodology used in pyQBTNs was introduced in <span id="id1">[<a class="reference internal" href="#id3">PHOMalley+21</a>]</span>.</p>
+<p>pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are described in <span id="id1">[<a class="reference internal" href="#id4" title="Elijah Pelofske, Georg Hahn, Daniel O'Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Boolean hierarchical tucker networks on quantum annealers. 2021. arXiv:2103.07399.">PHOMalley+21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id5" title="Daniel O’Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Tucker-1 boolean tensor factorization with quantum annealers. In 2020 International Conference on Rebooting Computing (ICRC), volume, 58-65. 2020. doi:10.1109/ICRC2020.2020.00002.">OMalleyDA20</a>]</span>.</p>
+<p>pyQBTNs includes five different boolean tensor factorization methods, making up three distinct types of tensor networks. pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm.</p>
+<p>In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)</p>
 </div>
 <div class="section" id="resources">
 <h1>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h1>
@@ -200,22 +201,41 @@ python -m unittest TestMatrixFactorizationQuantum.py
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For more detailed description of the D-Wave setup process see the <a class="reference external" href="https://github.com/lanl/pyQBTNs/tree/main/tutorials">tutorials</a> or the <a class="reference external" href="https://github.com/lanl/pyQBTNs/blob/main/examples/D-Wave.ipynb">example notebook on D-Wave</a>.</p>
+<p>For more detailed description of the D-Wave setup process see the <a class="reference external" href="https://github.com/lanl/pyQBTNs/tree/main/tutorials">tutorials</a> or the <a class="reference external" href="https://github.com/MaksimEkin/pyQBTNs/blob/main/examples/D-Wave_matrix_factorization.ipynb">example notebook on D-Wave</a>.</p>
 </div>
 </div>
 <div class="section" id="example-usage">
 <h1>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pyQBTNs</span> <span class="kn">import</span> <span class="n">QBTNs</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyQBTNs</span> <span class="kn">import</span> <span class="n">QBTNs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">qbtns</span> <span class="o">=</span> <span class="n">QBTNs</span><span class="p">(</span><span class="n">factorization_method</span><span class="o">=</span><span class="s2">&quot;Matrix_Factorization&quot;</span><span class="p">)</span>
+<span class="n">qbtns</span> <span class="o">=</span> <span class="n">QBTNs</span><span class="p">(</span><span class="n">factorization_method</span><span class="o">=</span><span class="s2">&quot;Matrix_Factorization&quot;</span><span class="p">,</span> <span class="n">solver_method</span><span class="o">=</span><span class="s2">&quot;classical-simulated-annealing&quot;</span><span class="p">)</span>
 
-<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.7</span> <span class="c1">### Bernoulli boolean density parameter</span>
+<span class="n">N1</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">### Dimension 1</span>
+<span class="n">N2</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">### Dimension 2</span>
+<span class="n">RANK</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1">### Factorization rank</span>
 
-<span class="n">qbtns</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">N1</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">N2</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
 
-<span class="n">score</span> <span class="o">=</span> <span class="n">qbtns</span><span class="o">.</span><span class="n">get_score</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A =&quot;</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B =&quot;</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X =&quot;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X dimensions =&quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">qbtns</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">RANK</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hamming distance =&quot;</span><span class="p">,</span> <span class="n">qbtns</span><span class="o">.</span><span class="n">get_score</span><span class="p">())</span>
+
+<span class="n">A_prime</span><span class="p">,</span> <span class="n">B_prime</span> <span class="o">=</span> <span class="n">qbtns</span><span class="o">.</span><span class="n">get_factors</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A_prime =&quot;</span><span class="p">,</span> <span class="n">A_prime</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;B_prime =&quot;</span><span class="p">,</span> <span class="n">B_prime</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reconstructed Matrix =&quot;</span><span class="p">,</span> <span class="n">qbtns</span><span class="o">.</span><span class="n">get_reconstructed_tensor</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -227,8 +247,8 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <li><p>dwave-ocean-sdk&gt;=3.3.0</p></li>
 <li><p>numpy==1.19.2</p></li>
 <li><p>tensorly&gt;=0.4.5</p></li>
-<li><p>sympy==1.7.1</p></li>
-<li><p>networkx&gt;=2.5</p></li>
+<li><p>sympy&gt;=1.7.1</p></li>
+<li><p>networkx==2.5</p></li>
 <li><p>nimfa&gt;=1.4.0</p></li>
 <li><p>scikit-learn==0.24.1</p></li>
 <li><p>matplotlib&gt;=3.4.2</p></li>
@@ -265,7 +285,6 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <li><p><a class="reference external" href="mailto:djidjev&#37;&#52;&#48;lanl&#46;gov">Hristo Djidjev</a> : Information Sciences, Los Alamos National Laboratory</p></li>
 <li><p><a class="reference external" href="mailto:omalled&#37;&#52;&#48;lanl&#46;gov">Dan O’Malley</a> : Computational Earth Science, Los Alamos National Laboratory</p></li>
 <li><p><a class="reference external" href="mailto:maksim&#37;&#52;&#48;lanl&#46;gov">Maksim Ekin Eren</a> : Advanced Research in Cyber Systems, Los Alamos National Laboratory</p></li>
-<li><p>Georg Hahn</p></li>
 <li><p><a class="reference external" href="mailto:boian&#37;&#52;&#48;lanl&#46;gov">Boian S<span>&#46;</span> Alexandrov</a> : Theoretical Division, Los Alamos National Laboratory</p></li>
 </ul>
 </div>
@@ -307,8 +326,11 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </div>
 <div class="section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
-<p id="id2"><dl class="citation">
-<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">PHOMalley+21</a></span></dt>
+<p id="id3"><dl class="citation">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">OMalleyDA20</a></span></dt>
+<dd><p>Daniel O’Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Tucker-1 boolean tensor factorization with quantum annealers. In <em>2020 International Conference on Rebooting Computing (ICRC)</em>, volume, 58–65. 2020. <a class="reference external" href="https://doi.org/10.1109/ICRC2020.2020.00002">doi:10.1109/ICRC2020.2020.00002</a>.</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">PHOMalley+21</a></span></dt>
 <dd><p>Elijah Pelofske, Georg Hahn, Daniel O'Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Boolean hierarchical tucker networks on quantum annealers. 2021. <a class="reference external" href="https://arxiv.org/abs/2103.07399">arXiv:2103.07399</a>.</p>
 </dd>
 </dl>
