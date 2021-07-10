@@ -45,7 +45,7 @@ python setup.py install
 cd tests
 python -m unittest TestMatrixFactorizationQuantum.py
 ```
-**Note:** For more detailed description of the D-Wave setup process see the [tutorials](tutorials/) or the [example notebook on D-Wave](examples/D-Wave.ipynb). 
+**Note:** For more detailed description of the D-Wave setup process see the [tutorials](tutorials/) or the [example notebook on D-Wave](examples/D-Wave_matrix_factorization.ipynb). 
 
 ## Example Usage
 ```python
