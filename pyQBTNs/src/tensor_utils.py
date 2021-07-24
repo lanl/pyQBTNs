@@ -8,11 +8,11 @@ def construct_tensor_TT(dimensions, RANK, p):
     Parameters
     ----------
     dimensions : list
-        list of dimensions.
+        list of dimensions. The length of this list is the order.
     RANK : int
         factorization rank.
     p : float
-        bernoulli proportion of True and False elements.
+        proportion of True and False elements for generating random boolean arrays.
 
     Returns
     -------
@@ -20,30 +20,19 @@ def construct_tensor_TT(dimensions, RANK, p):
         reconstructed Tensor Train tensor.
 
     """
-    """
+
     TT_list = []
     M1 = np.random.choice(a=[False, True], size=(dimensions[0], RANK), p=[p, 1-p])
     TT_list.append(M1)
 
     for idx in range(1, len(dimensions)-1):
-        print(idx)
         T_ = np.random.choice(a=[False, True], size=(RANK, dimensions[idx], RANK), p=[p, 1-p])
         TT_list.append(T_)
 
     M_end = np.random.choice(a=[False, True], size=(RANK, dimensions[len(dimensions)-1]), p=[p, 1-p])
     TT_list.append(M_end)
-    print(TT_list)
     return reconstruct_TT(TT_list)
-    """
-    n1 = dimensions[0]
-    n2 = dimensions[1]
-    n3 = dimensions[2]
-    n4 = dimensions[3]
-    M1 = np.random.choice(a=[False, True], size=(n1, RANK), p=[p, 1-p])
-    T2 = np.random.choice(a=[False, True], size=(RANK, n2, RANK), p=[p, 1-p])
-    T3 = np.random.choice(a=[False, True], size=(RANK, n3, RANK), p=[p, 1-p])
-    M4 = np.random.choice(a=[False, True], size=(RANK, n4), p=[p, 1-p])
-    return reconstruct_TT([M1, T2, T3, M4])
+
 def reconstruct_TT(factors):
     """
     Reconstructs a tensor given an input of factors generated from running the Tensor Train algorithm.
@@ -99,8 +88,24 @@ def reconstruct_HT(HT):
 
 
 def boolArray(l, p):
-        t = np.random.choice(a=[False, True], size=l, p=[p, 1-p])
-        return t
+    """
+
+
+    Parameters
+    ----------
+    l : list
+        list of sizes.
+    p : float
+        proportion of False entries.
+
+    Returns
+    -------
+    t : numpy array
+        numpy array of order length of l.
+
+    """
+    t = np.random.choice(a=[False, True], size=l, p=[p, 1-p])
+    return t
 
 def construct_HT(dims, ranks, p):
     """
@@ -108,20 +113,20 @@ def construct_HT(dims, ranks, p):
 
     Parameters
     ----------
-    dims : TYPE
-        DESCRIPTION.
-    ranks : TYPE
-        DESCRIPTION.
-    p : TYPE
-        DESCRIPTION.
+    dims : list
+        list of dimensions.
+    ranks : list
+        list of ranks.
+    p : float
+        proportion of True and False elements for generating random boolean arrays.
 
     Returns
     -------
-    T : TYPE
-        DESCRIPTION.
+    HT : dictionary
+        Reconstructed HT network.
 
     """
-    coreDims = [ranks.pop(),ranks.pop(),ranks.pop()]
+    coreDims = [ranks.pop(), ranks.pop(), ranks.pop()]
     l = len(dims)//2
     core = boolArray(coreDims, p)
     HT = {'core': core}
@@ -168,14 +173,14 @@ def construct_tucker_tensor(dims, ranks, p, random_state=42):
 
     Parameters
     ----------
-    dims : TYPE
-        DESCRIPTION.
-    ranks : TYPE
-        DESCRIPTION.
-    p : TYPE
-        DESCRIPTION.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    dims : list
+        list of dimensions.
+    ranks : list
+        list of ranks.
+    p : float
+        proportion of True and False elements for generating random boolean arrays.
+    random_state : integer, optional
+        random state. The default is 42.
 
     Returns
     -------
@@ -197,10 +202,10 @@ def split_HT(dims, rng):
 
     Parameters
     ----------
-    dims : TYPE
-        DESCRIPTION.
-    rng : TYPE
-        DESCRIPTION.
+    dims : list
+        list of dimensions.
+    rng : range
+        range of indexes in the dimension list.
 
     Returns
     -------
@@ -222,14 +227,14 @@ def split_TT(M, dims, ranks, rng):
 
     Parameters
     ----------
-    M : TYPE
-        DESCRIPTION.
-    dims : TYPE
-        DESCRIPTION.
-    ranks : TYPE
-        DESCRIPTION.
-    rng : TYPE
-        DESCRIPTION.
+    M : numpy array
+        Tensor or possible matrix. Boolean numpy array.
+    dims : list
+        list of dimensions.
+    ranks : list
+        list of ranks.
+    rng : range
+        range of indexes in the dimension list.
 
     Returns
     -------
@@ -253,12 +258,12 @@ def split_tucker(dims, ranks, rng):
 
     Parameters
     ----------
-    dims : TYPE
-        DESCRIPTION.
-    ranks : TYPE
-        DESCRIPTION.
-    rng : TYPE
-        DESCRIPTION.
+    dims : list
+        list of dimensions.
+    ranks : list
+        list of ranks.
+    rng : range
+        range of indexes in the dimension list.
 
     Returns
     -------

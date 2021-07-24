@@ -5,12 +5,11 @@ from .quantum_solve import batch_parallel_quantum_annealing, batch_quantum_annea
 from .classical_solve import batch_classical_single_QUBO
 from .utils import get_hamming_distance
 
-"""
-Matrix Factorization
-"""
-
 
 class Matrix_Factorization():
+    """
+    Matrix Factorization
+    """
 
     def __init__(self, solver_method, NNSVD_INITIAL_STATE_FLAG=0, maximum_iterations=500, maximum_converged_iterations=100, number_of_random_initial_states=100, random_initial_state_lower_bound=0.01, random_initial_state_upper_bound=0.99, parallel_bool=False, random_state=42):
         """
@@ -29,11 +28,11 @@ class Matrix_Factorization():
         number_of_random_initial_states : integer, optional
             DESCRIPTION. The default is 100.
         random_initial_state_lower_bound : float, optional
-            DESCRIPTION. The default is 0.01.
+            Lower bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.01.
         random_initial_state_upper_bound : float, optional
-            DESCRIPTION. The default is 0.99.
+            Upper bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.99.
         parallel_bool : Boolean, optional
-            DESCRIPTION. The default is False.
+            Set to True in order to use parallel quantum annealing. False in order to not use parallel QA. The default is False.
         random_state : integer, optional
             DESCRIPTION. The default is 42.
 

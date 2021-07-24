@@ -71,7 +71,7 @@ class Tucker_Recursive():
         dims2 = [q] + dims2
         ranks2 = [0] + ranks2
         # construct Tucker for the right part
-        if len(dims2) >= 6:
+        if len(dims2) >= self.minimum_recursive_order:
             core2, factors2 = self.train(M2, dims2, ranks2)
         else:
             core2, factors2 = self.Tucker_Iterative_solve.train(M2, dims2, ranks2)

@@ -9,12 +9,12 @@ from .utils import get_qubo, delete_keys_from_dict, get_bcols_from_samples, filt
 
 def call_simulated_annealing(QUBO, random_state=42):
     """
-
+    Call the simulated annealing method from the DWave API
 
     Parameters
     ----------
     QUBO : dictionary
-        quadratic unconstrained binary optimization problem.
+        quadratic unconstrained binary optimization problem. 
     random_state : integer, optional
         random seed. The default is 42.
 
@@ -23,7 +23,7 @@ def call_simulated_annealing(QUBO, random_state=42):
     out_vector : list
         list of dictionaries, where each dictionary is a good solution to the QUBO.
     CPU_TIME : float
-        CPU time.
+        CPU process time.
 
     """
     sampler = neal.SimulatedAnnealingSampler()
@@ -54,7 +54,7 @@ def call_steepest_descent(QUBO, random_state=42):
     out_vector : list
         list of dictionaries, where each dictionary is a good solution to the QUBO.
     CPU_TIME : float
-        CPU time.
+        CPU process time in seconds.
 
     """
     sampler = greedy.SteepestDescentSolver()
@@ -77,7 +77,7 @@ def call_tabu_sampler(QUBO, random_state=42):
     ----------
     QUBO : dictionary
         quadratic unconstrained binary optimization problem.
-    random_state : TYPE, optional
+    random_state : integer, optional
         random seed. The default is 42.
 
     Returns
@@ -85,7 +85,7 @@ def call_tabu_sampler(QUBO, random_state=42):
     out_vector : list
         list of dictionaries, where each dictionary is a good solution to the QUBO.
     CPU_TIME : float
-        CPU time.
+        CPU process time.
 
     """
     start = time.process_time()
@@ -101,27 +101,35 @@ def call_tabu_sampler(QUBO, random_state=42):
 
 def classical_single_QUBO(As, xs, all_QUBOS, solver_method, random_state=42):
     """
-
+    Uses classical QUBO solvers to solve individual QUBOs at a time
 
     Parameters
     ----------
-    As : TYPE
-        DESCRIPTION.
-    xs : TYPE
-        DESCRIPTION.
-    all_QUBOS : TYPE
-        DESCRIPTION.
-    solver_method : TYPE
-        DESCRIPTION.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    As : dictionary
+        In this case the dictionary has a single entry because we are only solving one QUBO at a time.
+        The single value is a numpy array A from x=Ab (we are solving for the column vector b). 
+        The key is tracking which column-factorization sub-problem this A is from.
+    xs : dictionary
+        In this case the dictionary has a single entry because we are only solving one QUBO at a time.
+        The only value is a numpy array (vector) of x in x=Ab. The only key is tracking which column-
+        factorization sub-problem this x is from.
+    all_QUBOS : dictionary
+        In this case the dictionary has a single entry because we are only solving one QUBO at a time.
+        The QUBO is the only value, and the key is the QUBO integer label from the embedding.
+    solver_method : string
+        QUBO solver method. Allowed values are "classical-simulated-annealing", 
+        "classical-steepest-descent",
+        "classsical-tabu-sampler",
+        "d-wave"
+    random_state : integer, optional
+        random state seed. The default is 42.
 
     Returns
     -------
-    bcol_solution_dict : TYPE
+    bcol_solution_dict : dictionary
         DESCRIPTION.
-    TOTAL_CPU_TIME : TYPE
-        DESCRIPTION.
+    TOTAL_CPU_TIME : float
+        total CPU process time.
 
     """
     assert len(list(As.keys())) == 1, "Something went wrong"
@@ -158,13 +166,13 @@ def batch_classical_single_QUBO(X, N, A, B, solver_method, random_state=42):
         Initial state.
     B : 2-d numpy array
         Initial state. Not used. Here for the logical consistency.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    random_state : integer, optional
+        random state. The default is 42.
 
     Returns
     -------
     out : list
-        list of columns.
+        list of (b) columns which solve the matrix factorization problem of X=AB.
 
     """
     random.seed(random_state)

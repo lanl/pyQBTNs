@@ -159,3 +159,18 @@ def iterative_embedding(CONNECTIVITY_GRAPH, target_clique_size, random_state=42)
                 if node in new_starting_points:
                     new_starting_points = remove_values_from_list(new_starting_points, node)
     return all_subgraphs
+
+def iterative_search_random_tries(hardware_connectivity, CLIQUE):
+        all_embeddings = []
+        for repetition in range(100):
+                emb = embedding.minorminer.find_embedding(nx.complete_graph(CLIQUE), hardware_connectivity, tries=20, max_no_improvement=20, threads=10)
+                if emb == {}:
+                        #print("Failed")
+                        continue
+                used_qubits = []
+                for a in emb:
+                        used_qubits += emb[a]
+                for qubit in used_qubits:
+                        hardware_connectivity.remove_node(qubit)
+                all_embeddings.append(emb)
+        return all_embeddings

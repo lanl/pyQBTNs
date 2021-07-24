@@ -96,7 +96,7 @@ def get_hamming_distance(M1, M2):
 
     Returns
     -------
-    ham : Int
+    ham : integer
         Number of unequal elements between the two boolean numpy arrays.
 
     """
@@ -123,7 +123,7 @@ def majority_vote(vectors, problem_embedding, random_state=42):
         Raw vectors from the D-Wave solver. The length is equal
         to the number of anneals. Each element in vectors is a list of
         length equal to the number of qubits on thee D-Wave device. For the
-        case of a D-Wave 2000Q, the number of qubits  is 2048.
+        case of a D-Wave 2000Q, the number of qubits  is 2048 (including active and inactive).
     problem_embedding : Dict
         Logical embedding for the problem that D-Wave solved. Keys are
         variable names, and values are a list of physical qubits representing
@@ -179,7 +179,7 @@ def delete_keys_from_dict(dictionary, keys_to_remove):
     Returns
     -------
     dictionary : dict
-        Dictionary with keys removedee.
+        Dictionary with keys removed.
 
     """
     for a in keys_to_remove:
@@ -296,7 +296,7 @@ def get_fixed_embedding(QUBO, complete_embedding, random_state=42):
         Represents a Quadratic Unconstrained Binary Optimization problem.
     complete_embedding : dictionary
         all-to-all connectivity embedding for the given QUBO.
-    random_state : TYPE, optional
+    random_state : integer, optional
         random seed parameter. The default is 42.
 
     Returns
@@ -335,8 +335,8 @@ def get_qubo(col, A, bcol_len, random_state=42):
         matrix A in x=Ab.
     bcol_len : integer
         expected length of the b-column solution vector. Also equal to rank.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    random_state : integer, optional
+        random state. The default is 42.
 
     Returns
     -------
@@ -376,7 +376,9 @@ def get_qubo(col, A, bcol_len, random_state=42):
 
 def column_solve_postprocess(b_cols, xcol, A):
     """
-
+    Solving x_col = A*b_col for b_col
+    This function calls DWave and then selects a column that minimizes error
+    A and B are the initial conditions
 
     Parameters
     ----------
@@ -392,11 +394,6 @@ def column_solve_postprocess(b_cols, xcol, A):
     selection : TYPE
         DESCRIPTION.
 
-    """
-    """
-    Solving x_col = A*b_col for b_col
-    This function calls DWave and then selects a column that minimizes error
-    A and B are the initial conditions
     """
     hamming_distances = []
     solutions = []
@@ -479,22 +476,22 @@ def filter_out_stored_QUBOs(QUBO_storage, all_QUBOS, all_xcols, all_Amatrices):
     ----------
     QUBO_storage : TYPE
         DESCRIPTION.
-    all_QUBOS : TYPE
+    all_QUBOS : dictionary
         DESCRIPTION.
-    all_xcols : TYPE
+    all_xcols : dictionary
         DESCRIPTION.
-    all_Amatrices : TYPE
+    all_Amatrices : dictionary
         DESCRIPTION.
 
     Returns
     -------
     storage_solutions : TYPE
         DESCRIPTION.
-    all_QUBOS : TYPE
+    all_QUBOS : dictionary
         DESCRIPTION.
-    all_xcols : TYPE
+    all_xcols : dictionary
         DESCRIPTION.
-    all_Amatrices : TYPE
+    all_Amatrices : dictionary
         DESCRIPTION.
 
     """
@@ -576,7 +573,7 @@ def remove_values_from_list(input_list, targ):
     Parameters
     ----------
     input_list : list
-        DESCRIPTION.
+        list to remove a value from.
     targ : usually integer, float or string
         target value to be removed.
 

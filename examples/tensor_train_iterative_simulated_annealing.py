@@ -5,7 +5,7 @@ from tensor_utils import construct_tensor_TT
 
 ### Set the tensor dimensions and properties
 ORDER = 4
-RANK = 3
+RANK = 2
 N = 4
 dims = [N for i in range(ORDER)]
 ranks =  [RANK for i in range(ORDER)]

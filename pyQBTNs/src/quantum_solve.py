@@ -6,34 +6,30 @@ from dwave import embedding
 from .utils import Start_DWave_connection, read_rank3_parallel_QA_embeddings, read_complete_embedding, map_embedding_to_QUBO, get_fixed_embedding, majority_vote, delete_keys_from_dict, get_bcols_from_samples, column_solve_postprocess, get_qubo, combine_QUBO_storage, remove_duplicate_QUBO, filter_out_stored_QUBOs
 
 
-"""
-Parallel Quantum Annealing
-"""
-
-
 def parallel_quantum_annealing(all_embs, As, xs, all_QUBOS, connectivity_graph, DWave_solver):
     """
-
+    Calls the DWave solver using the parallel quantum annealing method
 
     Parameters
     ----------
-    all_embs : TYPE
+    all_embs : dictionary
         DESCRIPTION.
-    As : TYPE
+    As : dictionary
         DESCRIPTION.
-    xs : TYPE
+    xs : dictionary
         DESCRIPTION.
-    all_QUBOS : TYPE
+    all_QUBOS : dictionary
         DESCRIPTION.
-    connectivity_graph : TYPE
-        DESCRIPTION.
-    DWave_solver : TYPE
-        DESCRIPTION.
+    connectivity_graph : nx.Graph()
+        Undirected hardware connectivity graph of the DWave solver.
+    DWave_solver : dwave.cloud.client.solver
+        DWave solver object.
 
     Returns
     -------
-    resulting_columns : TYPE
-        DESCRIPTION.
+    resulting_columns : dictionary
+        solved b-columns. Each key is the index for that column (so we can stitch together the results into our B matrix).
+        Each value is a list of 0 and 1 (boolean) vectors.
 
     """
     RANK = 3
@@ -63,7 +59,7 @@ def parallel_quantum_annealing(all_embs, As, xs, all_QUBOS, connectivity_graph, 
             vectors = sampleset.samples
             break
         except:
-            print("D-Wave connection failed, trying again ...")
+            print("D-Wave connection failed, trying again in 1 second...")
             time.sleep(1)
             continue
     resulting_columns = {}
@@ -155,15 +151,11 @@ def batch_parallel_quantum_annealing(X, N, A, B, random_state=42):
     return out
 
 
-"""
-Non-Parallel Quantum Annealing
-For ranks that are not 3
-"""
-
 
 def quantum_annealing(As, xs, all_QUBOS, connectivity_graph, DWave_solver, complete_embedding):
     """
-
+    Non-Parallel Quantum Annealing
+    For ranks that are not 3
 
     Parameters
     ----------
@@ -232,13 +224,13 @@ def batch_quantum_annealing(X, N, A, B, random_state=42):
         Initial state.
     B : 2-d numpy array
         Initial state. Not used. Here for the logical consistency.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    random_state : integer, optional
+        random sstate. The default is 42.
 
     Returns
     -------
     out : list
-        list of columns.
+        list of (b) columns.
 
     """
     random.seed(random_state)
