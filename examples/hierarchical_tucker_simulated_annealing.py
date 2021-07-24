@@ -20,7 +20,7 @@ print(len(T.ravel()))
 
 qbtns.fit(T, RANK, dimensions=dims, ranks=ranks)
 
-print(qbtns.get_score())
+print("Hamming distance =", qbtns.get_score())
 
 factors = qbtns.get_factors()
 T_prime = qbtns.get_reconstructed_tensor()
