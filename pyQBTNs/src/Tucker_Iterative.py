@@ -1,4 +1,4 @@
-import numpy as np
+"""Tuckeer Iterative."""
 import tensorly as tl
 from .Matrix_Factorization import Matrix_Factorization
 
@@ -23,7 +23,7 @@ class Tucker_Iterative():
 
     def train(self, T, dimensions, ranks):
         """
-        Factor the input tensor using the Tucker_Iterative algorithm
+        Factor the input tensor using the Tucker_Iterative algorithm.
 
         Parameters
         ----------

@@ -1,3 +1,5 @@
+"""Utilities."""
+
 import random
 import json
 import numpy as np
@@ -19,7 +21,7 @@ def Start_DWave_connection():
     DWave_solver : DWave solver object
         D-Wave solver object. You can pass problems to this object in order to submit them to be
         solved on the quantum annealer.
-    solver_name : string
+    solver_name : str
         Name of the quantum annealer.
 
     """
@@ -57,12 +59,12 @@ def read_rank3_parallel_QA_embeddings(random_state=42):
 
     Parameters
     ----------
-    random_state : integer, optional
+    random_state : int, optional
         random seed. The default is 42.
 
     Returns
     -------
-    rank_3_embeddings : Lisst
+    rank_3_embeddings : list
         List of disjoint clique-4 embeddings covering most of the quantum annealing hardware
         connectivity graph.
 
@@ -216,14 +218,14 @@ def get_T_F_vecs(col):
 
     Parameters
     ----------
-    col : List or numpy array
+    col : list or numpy array
         Input column vector.
 
     Returns
     -------
-    T : List
+    T : list
         Variable indicies for True variable state.
-    F : List
+    F : list
         Variable indicies for True variable state.
 
     """
@@ -244,12 +246,12 @@ def get_polynomial(A, V, indicator):
 
     Parameters
     ----------
-    A : TYPE
-        DESCRIPTION.
-    V : TYPE
-        DESCRIPTION.
-    indicator : Boolean
-        A boolean variable for storing what coefficient we need in front of the polynomial
+    A : Boolean numpy array
+        matrix A in x=Ab.
+    V : list
+        Vector passed from the method get_T_F_vecs().
+    indicator : bool
+        Boolean variable for storing what coefficient we need in front of the polynomial
         A is the other factor of X (or approximate factor of X) we are using.
 
     Returns
@@ -291,17 +293,17 @@ def get_fixed_embedding(QUBO, complete_embedding, random_state=42):
 
     Parameters
     ----------
-    QUBO : dictionary
+    QUBO : dict
         dictionary where the keys are linear or quadratic terms, and the values are real numbers.
         Represents a Quadratic Unconstrained Binary Optimization problem.
-    complete_embedding : dictionary
+    complete_embedding : dict
         all-to-all connectivity embedding for the given QUBO.
     random_state : integer, optional
         random seed parameter. The default is 42.
 
     Returns
     -------
-    QUBO_embedding : dictionary
+    QUBO_embedding : dict
         remapped embedding for QUBO.
 
     """
@@ -331,17 +333,17 @@ def get_qubo(col, A, bcol_len, random_state=42):
     ----------
     col : list or numpy array
         x-column in the problem x=Ab.
-    A : numpy array
+    A : Boolean numpy array
         matrix A in x=Ab.
-    bcol_len : integer
+    bcol_len : int
         expected length of the b-column solution vector. Also equal to rank.
-    random_state : integer, optional
+    random_state : int, optional
         random state. The default is 42.
 
     Returns
     -------
-    TYPE
-        DESCRIPTION.
+    QUBO : dict
+        QUBO created from the HUBO.
 
     """
     random.seed(random_state)
@@ -370,29 +372,28 @@ def get_qubo(col, A, bcol_len, random_state=42):
         HUBO_dict[term] = float(HUBO[a])
     coefs = [abs(a) for a in list(HUBO_dict.values())]
     HUBO_TO_QUBO_PENALTY_FACTOR = max(coefs)
-    Q = dimod.make_quadratic(HUBO_dict, HUBO_TO_QUBO_PENALTY_FACTOR, dimod.BINARY).to_qubo()[0]
-    return Q
+    QUBO = dimod.make_quadratic(HUBO_dict, HUBO_TO_QUBO_PENALTY_FACTOR, dimod.BINARY).to_qubo()[0]
+    return QUBO
 
 
 def column_solve_postprocess(b_cols, xcol, A):
     """
     Solving x_col = A*b_col for b_col
-    This function calls DWave and then selects a column that minimizes error
-    A and B are the initial conditions
+    This method chooses the best b_col out of however many post-processed solutions were returned by the probabilistic sampler.
 
     Parameters
     ----------
-    b_cols : TYPE
-        DESCRIPTION.
-    xcol : TYPE
-        DESCRIPTION.
-    A : TYPE
-        DESCRIPTION.
+    b_cols : list
+        List of b-column solutions found by the probabilistic sampler.
+    xcol : list
+        target x-column we want to get the factorization of.
+    A : 2-d Boolean numpy array (matrix)
+        The A in x=Ab.
 
     Returns
     -------
-    selection : TYPE
-        DESCRIPTION.
+    selection : list
+        b-column in the form of a list.
 
     """
     hamming_distances = []
@@ -414,19 +415,19 @@ def column_solve_postprocess(b_cols, xcol, A):
 
 def get_bcols_from_samples(vectors, rank):
     """
-
+    From the solved vectors, compute the corresponding b-columns
 
     Parameters
     ----------
-    vectors : TYPE
-        DESCRIPTION.
-    rank : integer
+    vectors : list
+        post-processed vectors.
+    rank : int
         rank of the column factorization problem.
 
     Returns
     -------
-    bcols : TYPE
-        DESCRIPTION.
+    bcols : list
+        List of solutions found by the probabilistic sampler, in the form of b-columns.
 
     """
     bcols = []
@@ -435,7 +436,7 @@ def get_bcols_from_samples(vectors, rank):
         for i in range(rank):
             try:
                 vec.append(sample[i])
-            except:
+            except:#Empty QUBO case
                 vec.append(random.choice([0, 1]))
         bcols.append(vec)
     return bcols
@@ -443,21 +444,21 @@ def get_bcols_from_samples(vectors, rank):
 
 def combine_QUBO_storage(QUBO_storage, solved_QUBOs, column_solutions):
     """
-
+    Merges previous QUBO storage with new solutions.
 
     Parameters
     ----------
-    QUBO_storage : TYPE
-        DESCRIPTION.
-    solved_QUBOs : TYPE
-        DESCRIPTION.
-    column_solutions : TYPE
-        DESCRIPTION.
+    QUBO_storage : list
+        Input QUBO storage list.
+    solved_QUBOs : dict
+        The QUBOs that were solved in this latest iteration.
+    column_solutions : dict
+        The associated b-column solutions for each of the solved QUBOs.
 
     Returns
     -------
-    QUBO_storage : TYPE
-        DESCRIPTION.
+    QUBO_storage : list
+        Updated QUBO storage with more QUBOs and their recorded solutions.
 
     """
     assert set(list(column_solutions.keys())) == set(
@@ -470,29 +471,30 @@ def combine_QUBO_storage(QUBO_storage, solved_QUBOs, column_solutions):
 
 def filter_out_stored_QUBOs(QUBO_storage, all_QUBOS, all_xcols, all_Amatrices):
     """
-
+    Removes QUBOs which have been solved previously (as tracked by QUBO_storage).
+    The best solutions that have been stored are then used instead of calling the solver again on the same QUBO.
 
     Parameters
     ----------
-    QUBO_storage : TYPE
-        DESCRIPTION.
-    all_QUBOS : dictionary
-        DESCRIPTION.
-    all_xcols : dictionary
-        DESCRIPTION.
-    all_Amatrices : dictionary
-        DESCRIPTION.
+    QUBO_storage : list
+        Stored QUBOs (and their solutions) that have already been solved.
+    all_QUBOS : dict
+        QUBOs to be (potentially) factored in this iteration.
+    all_xcols : dict
+        The associated x-columns for each of these QUBOs to be solved.
+    all_Amatrices : dict
+        The associated A matrices for each of these QUBOs to be solved..
 
     Returns
     -------
-    storage_solutions : TYPE
-        DESCRIPTION.
-    all_QUBOS : dictionary
-        DESCRIPTION.
-    all_xcols : dictionary
-        DESCRIPTION.
-    all_Amatrices : dictionary
-        DESCRIPTION.
+    storage_solutions : dict
+        Any solved QUBOs that we do not need to solve again.
+    all_QUBOS : dict
+        Updated QUBOs to solve.
+    all_xcols : dict
+        Updated x-columns dictionary.
+    all_Amatrices : dict
+        Updated A-columns dictionary.
 
     """
     storage_solutions = {}
@@ -517,15 +519,15 @@ def map_embedding_to_QUBO(QUBO, complete_embedding):
 
     Parameters
     ----------
-    QUBO : dictionary
+    QUBO : dict
         keys are linear or quadratic terms, and values are the weights associated
         with each of those terms.
-    complete_embedding : dictionary
+    complete_embedding : dict
         Large all-to-all embedding for the quantum annealing hardware.
 
     Returns
     -------
-    out : dictionary
+    out : dict
         re-mapped embedding .
 
     """
@@ -574,7 +576,7 @@ def remove_values_from_list(input_list, targ):
     ----------
     input_list : list
         list to remove a value from.
-    targ : usually integer, float or string
+    targ : usually int, float or str
         target value to be removed.
 
     Returns

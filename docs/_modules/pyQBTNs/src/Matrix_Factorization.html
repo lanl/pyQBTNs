@@ -156,19 +156,19 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyQBTNs.src.Matrix_Factorization</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span></span><span class="sd">&quot;&quot;&quot;Boolean Matrix Factorization.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">nimfa.methods.seeding.nndsvd</span> <span class="kn">import</span> <span class="n">Nndsvd</span>
 <span class="kn">from</span> <span class="nn">.quantum_solve</span> <span class="kn">import</span> <span class="n">batch_parallel_quantum_annealing</span><span class="p">,</span> <span class="n">batch_quantum_annealing</span>
 <span class="kn">from</span> <span class="nn">.classical_solve</span> <span class="kn">import</span> <span class="n">batch_classical_single_QUBO</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_hamming_distance</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Matrix Factorization</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
 
 <div class="viewcode-block" id="Matrix_Factorization"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.Matrix_Factorization.Matrix_Factorization">[docs]</a><span class="k">class</span> <span class="nc">Matrix_Factorization</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Matrix Factorization</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver_method</span><span class="p">,</span> <span class="n">NNSVD_INITIAL_STATE_FLAG</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">maximum_iterations</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">maximum_converged_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">number_of_random_initial_states</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_initial_state_lower_bound</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">random_initial_state_upper_bound</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">parallel_bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -177,23 +177,23 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        solver_method : string</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">            Solver method. Set to &quot;d-wave&quot; in order to use a quantum annealing backend.</span>
 <span class="sd">        NNSVD_INITIAL_STATE_FLAG : integer, optional</span>
-<span class="sd">            DESCRIPTION. The default is 0.</span>
+<span class="sd">            Passeed to the NNSVD initial state generator. The default is 0.</span>
 <span class="sd">        maximum_iterations : integer, optional</span>
-<span class="sd">            DESCRIPTION. The default is 500.</span>
+<span class="sd">            Absolute upper bound on the number of iterations for each full matrix factorization sub-routine. The default is 500.</span>
 <span class="sd">        maximum_converged_iterations : integer, optional</span>
-<span class="sd">            DESCRIPTION. The default is 100.</span>
+<span class="sd">            Secondary termination criteria for the iterative matrix factorization sub-routine. Terminates the algorithm if the error rate has converged to the same error rate (hamming distance). The default is 100.</span>
 <span class="sd">        number_of_random_initial_states : integer, optional</span>
-<span class="sd">            DESCRIPTION. The default is 100.</span>
+<span class="sd">            Numbere of random initial states to try. The default is 100.</span>
 <span class="sd">        random_initial_state_lower_bound : float, optional</span>
-<span class="sd">            DESCRIPTION. The default is 0.01.</span>
+<span class="sd">            Lower bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.01.</span>
 <span class="sd">        random_initial_state_upper_bound : float, optional</span>
-<span class="sd">            DESCRIPTION. The default is 0.99.</span>
+<span class="sd">            Upper bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.99.</span>
 <span class="sd">        parallel_bool : Boolean, optional</span>
-<span class="sd">            DESCRIPTION. The default is False.</span>
+<span class="sd">            Set to True in order to use parallel quantum annealing. False in order to not use parallel QA. The default is False.</span>
 <span class="sd">        random_state : integer, optional</span>
-<span class="sd">            DESCRIPTION. The default is 42.</span>
+<span class="sd">            random state. The default is 42.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -216,27 +216,27 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        RANK : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        A : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        B : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        X : 2-dimensional boolean numpy array</span>
+<span class="sd">            Boolean matrix to be factored.</span>
+<span class="sd">        RANK : integer</span>
+<span class="sd">            factorization rank.</span>
+<span class="sd">        A : 2-dimensional boolean numpy array</span>
+<span class="sd">            Initial state A.</span>
+<span class="sd">        B : 2-dimensional boolean numpy array</span>
+<span class="sd">            Initial state B.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">        A : 2-dimensional boolean numpy array</span>
+<span class="sd">            Best found factor (A) for X=AB.</span>
+<span class="sd">        B : 2-dimensional boolean numpy array</span>
+<span class="sd">            Best foudn factor (B) for X=AB.</span>
 <span class="sd">        bool</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        error_tracking : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
-<span class="sd">        error_tracking_data : TYPE</span>
-<span class="sd">            DESCRIPTION.</span>
+<span class="sd">            True if exact factorization was found. False otherwise</span>
+<span class="sd">        error_tracking : List</span>
+<span class="sd">            List of hamming distances for each pair of factor matrices (A, B) found.</span>
+<span class="sd">        error_tracking_data : List</span>
+<span class="sd">            Same as error_tracking, but also includes the pairs of matrices A and B.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>

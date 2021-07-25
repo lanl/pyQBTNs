@@ -1,3 +1,4 @@
+"""Tensor Train Iterative."""
 import numpy as np
 from .Matrix_Factorization import Matrix_Factorization
 from .tensor_utils import split_TT
@@ -23,7 +24,7 @@ class Tensor_Train_Iterative():
 
     def train(self, T, dimensions, ranks):
         """
-        Factor the input tensor using the Tensor_Train_Iterative algorithm
+        Factor the input tensor using the Tensor_Train_Iterative algorithm.
 
         Parameters
         ----------

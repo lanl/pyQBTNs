@@ -8,26 +8,26 @@ from .utils import Start_DWave_connection, read_rank3_parallel_QA_embeddings, re
 
 def parallel_quantum_annealing(all_embs, As, xs, all_QUBOS, connectivity_graph, DWave_solver):
     """
-    Calls the DWave solver using the parallel quantum annealing method
+    Calls the DWave solver using the parallel quantum annealing method. Solving the boolean column factorization problem x=Ab, where x and b are columns and A is a matrix.
 
     Parameters
     ----------
-    all_embs : dictionary
-        DESCRIPTION.
-    As : dictionary
-        DESCRIPTION.
-    xs : dictionary
-        DESCRIPTION.
-    all_QUBOS : dictionary
-        DESCRIPTION.
-    connectivity_graph : nx.Graph()
+    all_embs : dict
+        Parallel QA embeddings. Keys are unique embedding identifiers. Values are the small clique embeddings
+    As : dict
+        Keys are problem indexes. Value is the initial state boolean array (matrix) A.
+    xs : dict
+        Keys are problem indexes. Value is the x-column vector to be factored. 
+    all_QUBOS : dict
+        Keys are problem indexes. Values are QUBO dictionaries.
+    connectivity_graph : networkx.Graph()
         Undirected hardware connectivity graph of the DWave solver.
     DWave_solver : dwave.cloud.client.solver
         DWave solver object.
 
     Returns
     -------
-    resulting_columns : dictionary
+    resulting_columns : dict
         solved b-columns. Each key is the index for that column (so we can stitch together the results into our B matrix).
         Each value is a list of 0 and 1 (boolean) vectors.
 
@@ -84,19 +84,19 @@ def batch_parallel_quantum_annealing(X, N, A, B, random_state=42):
     ----------
     X : 2-d numpy array
         matrix to be factored.
-    N : integer
+    N : int
         column index.
     A : 2-d numpy array
         Initial state.
     B : 2-d numpy array
         Initial state. Not used. Here for the logical consistency.
-    random_state : TYPE, optional
-        DESCRIPTION. The default is 42.
+    random_state : int, optional
+        random state. The default is 42.
 
     Returns
     -------
     out : list
-        list of columns.
+        list of solved columns.
 
     """
     random.seed(random_state)
@@ -159,23 +159,23 @@ def quantum_annealing(As, xs, all_QUBOS, connectivity_graph, DWave_solver, compl
 
     Parameters
     ----------
-    As : TYPE
-        DESCRIPTION.
-    xs : TYPE
-        DESCRIPTION.
-    all_QUBOS : TYPE
-        DESCRIPTION.
-    connectivity_graph : TYPE
-        DESCRIPTION.
-    DWave_solver : TYPE
-        DESCRIPTION.
-    complete_embedding : TYPE
-        DESCRIPTION.
+    As : dict
+        Keys are problem indexes. Value is the initial state boolean array (matrix) A.
+    xs : dict
+        Keys are problem indexes. Value is the x-column vector to be factored.
+    all_QUBOS : dict
+        Keys are problem indexes. Values are QUBO dictionaries.
+    connectivity_graph : networkx.Graph()
+        Undirected hardware connectivity graph of the DWave solver.
+    DWave_solver : dwave.cloud.client.solver
+        DWave solver object.
+    complete_embedding : dict
+        Keys are the variable indexes (for the LANL 2000Q this is 0-64). Values are lists of the physical qubits (chain) for that variable index. 
 
     Returns
     -------
-    bcol_solution_dict : TYPE
-        DESCRIPTION.
+    bcol_solution_dict : dict
+        keys are the problem index. Values are the best found b-column for that particular column factorization problem.
 
     """
     assert len(list(As.keys())) == 1, "Something went wrong"
@@ -199,7 +199,7 @@ def quantum_annealing(As, xs, all_QUBOS, connectivity_graph, DWave_solver, compl
             vectors = sampleset.samples
             break
         except:
-            print("D-Wave connection failed, trying again ...")
+            print("D-Wave connection failed, trying again in 1 second...")
             time.sleep(1)
             continue
     unembedded = majority_vote(vectors, QUBO_EMBEDDING)
@@ -218,14 +218,14 @@ def batch_quantum_annealing(X, N, A, B, random_state=42):
     ----------
     X : 2-d numpy array
         matrix to be factored.
-    N : integer
+    N : int
         column index.
     A : 2-d numpy array
         Initial state.
     B : 2-d numpy array
         Initial state. Not used. Here for the logical consistency.
-    random_state : integer, optional
-        random sstate. The default is 42.
+    random_state : int, optional
+        random state. The default is 42.
 
     Returns
     -------

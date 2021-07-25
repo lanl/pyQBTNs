@@ -189,13 +189,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        factorization_method : string</span>
+<span class="sd">        factorization_method : str</span>
 <span class="sd">            Options are : &#39;Matrix_Factorization&#39;, &#39;Tensor_Train_Recursive&#39;, &#39;Tensor_Train_Iterative&#39;, &#39;Hierarchical_Tucker&#39;, &#39;Tucker_Recursive&#39;, &#39;Tucker_Iterative&#39;.</span>
 
-<span class="sd">        solver_method : string, optional</span>
+<span class="sd">        solver_method : str, optional</span>
 <span class="sd">            Options are : &quot;d-wave&quot;, &quot;classical-simulated-annealing&quot;, &quot;classical-steepest-descent&quot;, &quot;classsical-tabu-sampler&quot;. Default is &quot;classical-simulated-annealing&quot;</span>
 
-<span class="sd">        random_state : integer, optional</span>
+<span class="sd">        random_state : int, optional</span>
 <span class="sd">            Integer to set random seeds in the algorithm.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -260,7 +260,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        Tensor : numpy.array(dtype=bool)</span>
 <span class="sd">            Boolean numpy array with at least two dimensions.</span>
-<span class="sd">        Rank : Int</span>
+<span class="sd">        Rank : int</span>
 <span class="sd">            Rank of the factors. Rank &gt;= 2.</span>
 <span class="sd">            The size of the quantum annealing hardware limits the size of the rank.</span>
 <span class="sd">            For the LANL D-Wave 2000Q, the safe limit is rank 8,</span>
@@ -305,7 +305,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Integer</span>
+<span class="sd">        integer</span>
 <span class="sd">            Hamming distance between the input tensor and the factors found by the given algorithm.</span>
 <span class="sd">            The smaller the hamming distance is, the more accurate the factorization process was.</span>
 
@@ -321,7 +321,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        List or Dictionary or Tuple</span>
+<span class="sd">        list or dict or tuple</span>
 <span class="sd">            returns some sort of data structure containing the computed factors.</span>
 <span class="sd">            Each factorization algorithm returns slightly different formats for the factors.</span>
 

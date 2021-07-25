@@ -31,13 +31,13 @@ class QBTNs():
 
         Parameters
         ----------
-        factorization_method : string
+        factorization_method : str
             Options are : 'Matrix_Factorization', 'Tensor_Train_Recursive', 'Tensor_Train_Iterative', 'Hierarchical_Tucker', 'Tucker_Recursive', 'Tucker_Iterative'.
 
-        solver_method : string, optional
+        solver_method : str, optional
             Options are : "d-wave", "classical-simulated-annealing", "classical-steepest-descent", "classsical-tabu-sampler". Default is "classical-simulated-annealing"
 
-        random_state : integer, optional
+        random_state : int, optional
             Integer to set random seeds in the algorithm.
 
         """
@@ -102,7 +102,7 @@ class QBTNs():
         ----------
         Tensor : numpy.array(dtype=bool)
             Boolean numpy array with at least two dimensions.
-        Rank : Int
+        Rank : int
             Rank of the factors. Rank >= 2.
             The size of the quantum annealing hardware limits the size of the rank.
             For the LANL D-Wave 2000Q, the safe limit is rank 8,
@@ -147,7 +147,7 @@ class QBTNs():
 
         Returns
         -------
-        Integer
+        integer
             Hamming distance between the input tensor and the factors found by the given algorithm.
             The smaller the hamming distance is, the more accurate the factorization process was.
 
@@ -163,7 +163,7 @@ class QBTNs():
 
         Returns
         -------
-        List or Dictionary or Tuple
+        list or dict or tuple
             returns some sort of data structure containing the computed factors.
             Each factorization algorithm returns slightly different formats for the factors.
 

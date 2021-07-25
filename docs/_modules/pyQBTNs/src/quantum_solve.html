@@ -164,34 +164,30 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">Start_DWave_connection</span><span class="p">,</span> <span class="n">read_rank3_parallel_QA_embeddings</span><span class="p">,</span> <span class="n">read_complete_embedding</span><span class="p">,</span> <span class="n">map_embedding_to_QUBO</span><span class="p">,</span> <span class="n">get_fixed_embedding</span><span class="p">,</span> <span class="n">majority_vote</span><span class="p">,</span> <span class="n">delete_keys_from_dict</span><span class="p">,</span> <span class="n">get_bcols_from_samples</span><span class="p">,</span> <span class="n">column_solve_postprocess</span><span class="p">,</span> <span class="n">get_qubo</span><span class="p">,</span> <span class="n">combine_QUBO_storage</span><span class="p">,</span> <span class="n">remove_duplicate_QUBO</span><span class="p">,</span> <span class="n">filter_out_stored_QUBOs</span>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Parallel Quantum Annealing</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
 <div class="viewcode-block" id="parallel_quantum_annealing"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.quantum_solve.parallel_quantum_annealing">[docs]</a><span class="k">def</span> <span class="nf">parallel_quantum_annealing</span><span class="p">(</span><span class="n">all_embs</span><span class="p">,</span> <span class="n">As</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">all_QUBOS</span><span class="p">,</span> <span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">DWave_solver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Calls the DWave solver using the parallel quantum annealing method. Solving the boolean column factorization problem x=Ab, where x and b are columns and A is a matrix.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    all_embs : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    As : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    xs : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    all_QUBOS : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    connectivity_graph : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    DWave_solver : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    all_embs : dict</span>
+<span class="sd">        Parallel QA embeddings. Keys are unique embedding identifiers. Values are the small clique embeddings</span>
+<span class="sd">    As : dict</span>
+<span class="sd">        Keys are problem indexes. Value is the initial state boolean array (matrix) A.</span>
+<span class="sd">    xs : dict</span>
+<span class="sd">        Keys are problem indexes. Value is the x-column vector to be factored. </span>
+<span class="sd">    all_QUBOS : dict</span>
+<span class="sd">        Keys are problem indexes. Values are QUBO dictionaries.</span>
+<span class="sd">    connectivity_graph : networkx.Graph()</span>
+<span class="sd">        Undirected hardware connectivity graph of the DWave solver.</span>
+<span class="sd">    DWave_solver : dwave.cloud.client.solver</span>
+<span class="sd">        DWave solver object.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    resulting_columns : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    resulting_columns : dict</span>
+<span class="sd">        solved b-columns. Each key is the index for that column (so we can stitch together the results into our B matrix).</span>
+<span class="sd">        Each value is a list of 0 and 1 (boolean) vectors.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">RANK</span> <span class="o">=</span> <span class="mi">3</span>
@@ -221,7 +217,7 @@
             <span class="n">vectors</span> <span class="o">=</span> <span class="n">sampleset</span><span class="o">.</span><span class="n">samples</span>
             <span class="k">break</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;D-Wave connection failed, trying again ...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;D-Wave connection failed, trying again in 1 second...&quot;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">continue</span>
     <span class="n">resulting_columns</span> <span class="o">=</span> <span class="p">{}</span>
@@ -246,19 +242,19 @@
 <span class="sd">    ----------</span>
 <span class="sd">    X : 2-d numpy array</span>
 <span class="sd">        matrix to be factored.</span>
-<span class="sd">    N : integer</span>
+<span class="sd">    N : int</span>
 <span class="sd">        column index.</span>
 <span class="sd">    A : 2-d numpy array</span>
 <span class="sd">        Initial state.</span>
 <span class="sd">    B : 2-d numpy array</span>
 <span class="sd">        Initial state. Not used. Here for the logical consistency.</span>
-<span class="sd">    random_state : TYPE, optional</span>
-<span class="sd">        DESCRIPTION. The default is 42.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        random state. The default is 42.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : list</span>
-<span class="sd">        list of columns.</span>
+<span class="sd">        list of solved columns.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
@@ -313,35 +309,31 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Non-Parallel Quantum Annealing</span>
-<span class="sd">For ranks that are not 3</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
 
 <div class="viewcode-block" id="quantum_annealing"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.quantum_solve.quantum_annealing">[docs]</a><span class="k">def</span> <span class="nf">quantum_annealing</span><span class="p">(</span><span class="n">As</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">all_QUBOS</span><span class="p">,</span> <span class="n">connectivity_graph</span><span class="p">,</span> <span class="n">DWave_solver</span><span class="p">,</span> <span class="n">complete_embedding</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Non-Parallel Quantum Annealing</span>
+<span class="sd">    For ranks that are not 3</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    As : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    xs : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    all_QUBOS : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    connectivity_graph : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    DWave_solver : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    complete_embedding : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    As : dict</span>
+<span class="sd">        Keys are problem indexes. Value is the initial state boolean array (matrix) A.</span>
+<span class="sd">    xs : dict</span>
+<span class="sd">        Keys are problem indexes. Value is the x-column vector to be factored.</span>
+<span class="sd">    all_QUBOS : dict</span>
+<span class="sd">        Keys are problem indexes. Values are QUBO dictionaries.</span>
+<span class="sd">    connectivity_graph : networkx.Graph()</span>
+<span class="sd">        Undirected hardware connectivity graph of the DWave solver.</span>
+<span class="sd">    DWave_solver : dwave.cloud.client.solver</span>
+<span class="sd">        DWave solver object.</span>
+<span class="sd">    complete_embedding : dict</span>
+<span class="sd">        Keys are the variable indexes (for the LANL 2000Q this is 0-64). Values are lists of the physical qubits (chain) for that variable index. </span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    bcol_solution_dict : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    bcol_solution_dict : dict</span>
+<span class="sd">        keys are the problem index. Values are the best found b-column for that particular column factorization problem.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">As</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
@@ -365,7 +357,7 @@
             <span class="n">vectors</span> <span class="o">=</span> <span class="n">sampleset</span><span class="o">.</span><span class="n">samples</span>
             <span class="k">break</span>
         <span class="k">except</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;D-Wave connection failed, trying again ...&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;D-Wave connection failed, trying again in 1 second...&quot;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">continue</span>
     <span class="n">unembedded</span> <span class="o">=</span> <span class="n">majority_vote</span><span class="p">(</span><span class="n">vectors</span><span class="p">,</span> <span class="n">QUBO_EMBEDDING</span><span class="p">)</span>
@@ -384,19 +376,19 @@
 <span class="sd">    ----------</span>
 <span class="sd">    X : 2-d numpy array</span>
 <span class="sd">        matrix to be factored.</span>
-<span class="sd">    N : integer</span>
+<span class="sd">    N : int</span>
 <span class="sd">        column index.</span>
 <span class="sd">    A : 2-d numpy array</span>
 <span class="sd">        Initial state.</span>
 <span class="sd">    B : 2-d numpy array</span>
 <span class="sd">        Initial state. Not used. Here for the logical consistency.</span>
-<span class="sd">    random_state : TYPE, optional</span>
-<span class="sd">        DESCRIPTION. The default is 42.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        random state. The default is 42.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : list</span>
-<span class="sd">        list of columns.</span>
+<span class="sd">        list of (b) columns.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>

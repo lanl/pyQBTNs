@@ -1,3 +1,4 @@
+"""Boolean Matrix Factorization."""
 import random
 import numpy as np
 from nimfa.methods.seeding.nndsvd import Nndsvd
@@ -18,15 +19,15 @@ class Matrix_Factorization():
         Parameters
         ----------
         solver_method : string
-            DESCRIPTION.
+            Solver method. Set to "d-wave" in order to use a quantum annealing backend.
         NNSVD_INITIAL_STATE_FLAG : integer, optional
-            DESCRIPTION. The default is 0.
+            Passeed to the NNSVD initial state generator. The default is 0.
         maximum_iterations : integer, optional
-            DESCRIPTION. The default is 500.
+            Absolute upper bound on the number of iterations for each full matrix factorization sub-routine. The default is 500.
         maximum_converged_iterations : integer, optional
-            DESCRIPTION. The default is 100.
+            Secondary termination criteria for the iterative matrix factorization sub-routine. Terminates the algorithm if the error rate has converged to the same error rate (hamming distance). The default is 100.
         number_of_random_initial_states : integer, optional
-            DESCRIPTION. The default is 100.
+            Numbere of random initial states to try. The default is 100.
         random_initial_state_lower_bound : float, optional
             Lower bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.01.
         random_initial_state_upper_bound : float, optional
@@ -34,7 +35,7 @@ class Matrix_Factorization():
         parallel_bool : Boolean, optional
             Set to True in order to use parallel quantum annealing. False in order to not use parallel QA. The default is False.
         random_state : integer, optional
-            DESCRIPTION. The default is 42.
+            random state. The default is 42.
 
         Returns
         -------
@@ -57,27 +58,27 @@ class Matrix_Factorization():
 
         Parameters
         ----------
-        X : TYPE
-            DESCRIPTION.
-        RANK : TYPE
-            DESCRIPTION.
-        A : TYPE
-            DESCRIPTION.
-        B : TYPE
-            DESCRIPTION.
+        X : 2-dimensional boolean numpy array
+            Boolean matrix to be factored.
+        RANK : integer
+            factorization rank.
+        A : 2-dimensional boolean numpy array
+            Initial state A.
+        B : 2-dimensional boolean numpy array
+            Initial state B.
 
         Returns
         -------
-        TYPE
-            DESCRIPTION.
-        TYPE
-            DESCRIPTION.
+        A : 2-dimensional boolean numpy array
+            Best found factor (A) for X=AB.
+        B : 2-dimensional boolean numpy array
+            Best foudn factor (B) for X=AB.
         bool
-            DESCRIPTION.
-        error_tracking : TYPE
-            DESCRIPTION.
-        error_tracking_data : TYPE
-            DESCRIPTION.
+            True if exact factorization was found. False otherwise
+        error_tracking : List
+            List of hamming distances for each pair of factor matrices (A, B) found.
+        error_tracking_data : List
+            Same as error_tracking, but also includes the pairs of matrices A and B.
 
         """
         iteration = 0

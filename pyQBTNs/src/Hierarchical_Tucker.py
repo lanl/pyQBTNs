@@ -1,3 +1,4 @@
+"""Hierarchical Tucker."""
 import numpy as np
 from .tensor_utils import split_HT
 from .Matrix_Factorization import Matrix_Factorization
@@ -23,7 +24,7 @@ class Hierarchical_Tucker():
 
     def train(self, T, dimensions, ranks):
         """
-        Factor the input tensor using the Tucker_Recursive algorithm
+        Factor the input tensor using the Tucker_Recursive algorithm.
 
         Parameters
         ----------

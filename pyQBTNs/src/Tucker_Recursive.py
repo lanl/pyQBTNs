@@ -1,3 +1,4 @@
+"""Tucker Recursive."""
 import numpy as np
 import math
 import tensorly as tl

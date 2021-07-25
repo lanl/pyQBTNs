@@ -156,21 +156,24 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyQBTNs.src.tensor_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;Tensor Utilities.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tensorly</span> <span class="k">as</span> <span class="nn">tl</span>
 
 <div class="viewcode-block" id="construct_tensor_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_tensor_TT">[docs]</a><span class="k">def</span> <span class="nf">construct_tensor_TT</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span> <span class="n">RANK</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Constructs a tensor train tensor</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    dimensions : list</span>
-<span class="sd">        list of dimensions.</span>
+<span class="sd">        list of dimensions. The length of this list is the order.</span>
 <span class="sd">    RANK : int</span>
 <span class="sd">        factorization rank.</span>
 <span class="sd">    p : float</span>
-<span class="sd">        bernoulli proportion of True and False elements.</span>
+<span class="sd">        proportion of True and False elements for generating random boolean arrays.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -178,30 +181,19 @@
 <span class="sd">        reconstructed Tensor Train tensor.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    TT_list = []</span>
-<span class="sd">    M1 = np.random.choice(a=[False, True], size=(dimensions[0], RANK), p=[p, 1-p])</span>
-<span class="sd">    TT_list.append(M1)</span>
 
-<span class="sd">    for idx in range(1, len(dimensions)-1):</span>
-<span class="sd">        print(idx)</span>
-<span class="sd">        T_ = np.random.choice(a=[False, True], size=(RANK, dimensions[idx], RANK), p=[p, 1-p])</span>
-<span class="sd">        TT_list.append(T_)</span>
+    <span class="n">TT_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">M1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">TT_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M1</span><span class="p">)</span>
 
-<span class="sd">    M_end = np.random.choice(a=[False, True], size=(RANK, dimensions[len(dimensions)-1]), p=[p, 1-p])</span>
-<span class="sd">    TT_list.append(M_end)</span>
-<span class="sd">    print(TT_list)</span>
-<span class="sd">    return reconstruct_TT(TT_list)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n1</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n2</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">n3</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">n4</span> <span class="o">=</span> <span class="n">dimensions</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-    <span class="n">M1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="n">T2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="n">T3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="n">M4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">n4</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">reconstruct_TT</span><span class="p">([</span><span class="n">M1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">T3</span><span class="p">,</span> <span class="n">M4</span><span class="p">])</span></div>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">T_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">RANK</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+        <span class="n">TT_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T_</span><span class="p">)</span>
+
+    <span class="n">M_end</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">RANK</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="n">TT_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M_end</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reconstruct_TT</span><span class="p">(</span><span class="n">TT_list</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="reconstruct_TT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.reconstruct_TT">[docs]</a><span class="k">def</span> <span class="nf">reconstruct_TT</span><span class="p">(</span><span class="n">factors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reconstructs a tensor given an input of factors generated from running the Tensor Train algorithm.</span>
@@ -235,7 +227,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    HT : dictionary</span>
+<span class="sd">    HT : dict</span>
 <span class="sd">        factors from Hierarchical Tucker algorithm.</span>
 
 <span class="sd">    Returns</span>
@@ -257,29 +249,45 @@
 
 
 <div class="viewcode-block" id="boolArray"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.boolArray">[docs]</a><span class="k">def</span> <span class="nf">boolArray</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">t</span></div>
-
-<div class="viewcode-block" id="construct_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT">[docs]</a><span class="k">def</span> <span class="nf">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Generate random boolean array of size l with proportion of True/False according to p</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    ranks : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    p : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    l : list</span>
+<span class="sd">        list of sizes.</span>
+<span class="sd">    p : float</span>
+<span class="sd">        proportion of False entries for constructing random boolean numpy arrays.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    T : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    t : numpy array</span>
+<span class="sd">        numpy array of order length of l.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coreDims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">t</span></div>
+
+<div class="viewcode-block" id="construct_HT"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.tensor_utils.construct_HT">[docs]</a><span class="k">def</span> <span class="nf">construct_HT</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">ranks</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct HT dictionary</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dims : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    ranks : list</span>
+<span class="sd">        list of ranks.</span>
+<span class="sd">    p : float</span>
+<span class="sd">        proportion of True and False elements for generating random boolean arrays.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    HT : dict</span>
+<span class="sd">        Reconstructed HT network.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coreDims</span> <span class="o">=</span> <span class="p">[</span><span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span> <span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">(),</span> <span class="n">ranks</span><span class="o">.</span><span class="n">pop</span><span class="p">()]</span>
     <span class="n">l</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
     <span class="n">core</span> <span class="o">=</span> <span class="n">boolArray</span><span class="p">(</span><span class="n">coreDims</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
     <span class="n">HT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;core&#39;</span><span class="p">:</span> <span class="n">core</span><span class="p">}</span>
@@ -326,19 +334,23 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    ranks : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    p : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    random_state : TYPE, optional</span>
-<span class="sd">        DESCRIPTION. The default is 42.</span>
+<span class="sd">    dims : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    ranks : list</span>
+<span class="sd">        list of ranks.</span>
+<span class="sd">    p : float</span>
+<span class="sd">        proportion of True and False elements for generating random boolean arrays.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        random state. The default is 42.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    TYPE</span>
+<span class="sd">    core : numpy array</span>
 <span class="sd">        DESCRIPTION.</span>
+<span class="sd">    factors : list</span>
+<span class="sd">        List of numpy arrays, which are the constructed factors of the tensor</span>
+<span class="sd">    tensor : numpy array</span>
+<span class="sd">        Tensor in the form of a boolean numpy array</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ranks</span><span class="p">))</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
@@ -355,17 +367,17 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    rng : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dims : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    rng : range</span>
+<span class="sd">        range of indexes in the dimension list.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dim : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dim : int</span>
+<span class="sd">        product of dimensions in rng.</span>
 <span class="sd">    list</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">        list of a subset (in rng) of dimensionss.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>
@@ -380,23 +392,23 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    M : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    ranks : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    rng : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    M : numpy array</span>
+<span class="sd">        Tensor or possible matrix. Boolean numpy array.</span>
+<span class="sd">    dims : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    ranks : list</span>
+<span class="sd">        list of ranks.</span>
+<span class="sd">    rng : range</span>
+<span class="sd">        range of indexes in the dimension list.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dim : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dim : int </span>
+<span class="sd">        product of dimensions in rng.</span>
 <span class="sd">    list</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">        list of a subset (in rng) of dimensionss.</span>
 <span class="sd">    list</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">        list of a subset (in rng) of ranks.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>
@@ -411,21 +423,21 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    dims : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    ranks : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    rng : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dims : list</span>
+<span class="sd">        list of dimensions.</span>
+<span class="sd">    ranks : list</span>
+<span class="sd">        list of ranks.</span>
+<span class="sd">    rng : range</span>
+<span class="sd">        range of indexes in the dimension list.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    dim : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    dim : int</span>
+<span class="sd">        product of dimensions in rng.</span>
 <span class="sd">    list</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">        list of a subset (in rng) of dimensionss.</span>
 <span class="sd">    list</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">        list of a subset (in rng) of ranks.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span>

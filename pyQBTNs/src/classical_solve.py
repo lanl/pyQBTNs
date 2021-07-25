@@ -1,3 +1,4 @@
+"""Classical (local) solver methods."""
 import random
 import time
 import itertools
@@ -14,7 +15,7 @@ def call_simulated_annealing(QUBO, random_state=42):
     Parameters
     ----------
     QUBO : dictionary
-        quadratic unconstrained binary optimization problem. 
+        quadratic unconstrained binary optimization problem.
     random_state : integer, optional
         random seed. The default is 42.
 
@@ -107,7 +108,7 @@ def classical_single_QUBO(As, xs, all_QUBOS, solver_method, random_state=42):
     ----------
     As : dictionary
         In this case the dictionary has a single entry because we are only solving one QUBO at a time.
-        The single value is a numpy array A from x=Ab (we are solving for the column vector b). 
+        The single value is a numpy array A from x=Ab (we are solving for the column vector b).
         The key is tracking which column-factorization sub-problem this A is from.
     xs : dictionary
         In this case the dictionary has a single entry because we are only solving one QUBO at a time.
@@ -117,7 +118,7 @@ def classical_single_QUBO(As, xs, all_QUBOS, solver_method, random_state=42):
         In this case the dictionary has a single entry because we are only solving one QUBO at a time.
         The QUBO is the only value, and the key is the QUBO integer label from the embedding.
     solver_method : string
-        QUBO solver method. Allowed values are "classical-simulated-annealing", 
+        QUBO solver method. Allowed values are "classical-simulated-annealing",
         "classical-steepest-descent",
         "classsical-tabu-sampler",
         "d-wave"
@@ -126,8 +127,8 @@ def classical_single_QUBO(As, xs, all_QUBOS, solver_method, random_state=42):
 
     Returns
     -------
-    bcol_solution_dict : dictionary
-        DESCRIPTION.
+    bcol_solution_dict : dict
+        Keys are the column-factorization sub problem index, and values are the solved b-column solutions.
     TOTAL_CPU_TIME : float
         total CPU process time.
 
@@ -153,20 +154,19 @@ def classical_single_QUBO(As, xs, all_QUBOS, solver_method, random_state=42):
 
 def batch_classical_single_QUBO(X, N, A, B, solver_method, random_state=42):
     """
-    Solves the individual column factorization problems using classical algorithms such as
-    simulated anealing.
+    Solves the individual column factorization problems using classical algorithms such as simulated anealing.
 
     Parameters
     ----------
     X : 2-d numpy array
         matrix to be factored.
-    N : integer
+    N : int
         column index.
     A : 2-d numpy array
         Initial state.
     B : 2-d numpy array
         Initial state. Not used. Here for the logical consistency.
-    random_state : integer, optional
+    random_state : int, optional
         random state. The default is 42.
 
     Returns

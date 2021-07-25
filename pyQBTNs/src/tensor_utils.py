@@ -1,7 +1,10 @@
+"""Tensor Utilities."""
+
 import numpy as np
 import tensorly as tl
 
 def construct_tensor_TT(dimensions, RANK, p):
+
     """
     Constructs a tensor train tensor
 
@@ -66,7 +69,7 @@ def reconstruct_HT(HT):
 
     Parameters
     ----------
-    HT : dictionary
+    HT : dict
         factors from Hierarchical Tucker algorithm.
 
     Returns
@@ -89,14 +92,14 @@ def reconstruct_HT(HT):
 
 def boolArray(l, p):
     """
-
+    Generate random boolean array of size l with proportion of True/False according to p
 
     Parameters
     ----------
     l : list
         list of sizes.
     p : float
-        proportion of False entries.
+        proportion of False entries for constructing random boolean numpy arrays.
 
     Returns
     -------
@@ -109,7 +112,7 @@ def boolArray(l, p):
 
 def construct_HT(dims, ranks, p):
     """
-
+    Construct HT dictionary
 
     Parameters
     ----------
@@ -122,7 +125,7 @@ def construct_HT(dims, ranks, p):
 
     Returns
     -------
-    HT : dictionary
+    HT : dict
         Reconstructed HT network.
 
     """
@@ -179,13 +182,17 @@ def construct_tucker_tensor(dims, ranks, p, random_state=42):
         list of ranks.
     p : float
         proportion of True and False elements for generating random boolean arrays.
-    random_state : integer, optional
+    random_state : int, optional
         random state. The default is 42.
 
     Returns
     -------
-    TYPE
+    core : numpy array
         DESCRIPTION.
+    factors : list
+        List of numpy arrays, which are the constructed factors of the tensor
+    tensor : numpy array
+        Tensor in the form of a boolean numpy array
 
     """
     core = np.array(np.random.rand(*tuple(ranks)).round(), dtype=bool)
@@ -209,10 +216,10 @@ def split_HT(dims, rng):
 
     Returns
     -------
-    dim : TYPE
-        DESCRIPTION.
+    dim : int
+        product of dimensions in rng.
     list
-        DESCRIPTION.
+        list of a subset (in rng) of dimensionss.
 
     """
     dim = 1
@@ -238,12 +245,12 @@ def split_TT(M, dims, ranks, rng):
 
     Returns
     -------
-    dim : TYPE
-        DESCRIPTION.
+    dim : int 
+        product of dimensions in rng.
     list
-        DESCRIPTION.
+        list of a subset (in rng) of dimensionss.
     list
-        DESCRIPTION.
+        list of a subset (in rng) of ranks.
 
     """
     dim = 1
@@ -267,12 +274,12 @@ def split_tucker(dims, ranks, rng):
 
     Returns
     -------
-    dim : TYPE
-        DESCRIPTION.
+    dim : int
+        product of dimensions in rng.
     list
-        DESCRIPTION.
+        list of a subset (in rng) of dimensionss.
     list
-        DESCRIPTION.
+        list of a subset (in rng) of ranks.
 
     """
     dim = 1

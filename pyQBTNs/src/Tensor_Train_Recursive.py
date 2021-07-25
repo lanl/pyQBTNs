@@ -1,3 +1,4 @@
+"""Tensor Train Recursive."""
 import numpy as np
 import math
 from .Matrix_Factorization import Matrix_Factorization

@@ -14,6 +14,6 @@ print(np.matmul(A, B))
 
 qbtns.fit(np.matmul(A, B), RANK)
 
-print(qbtns.get_score())
+print("Hamming distance =", qbtns.get_score())
 
 print(qbtns.get_factors())

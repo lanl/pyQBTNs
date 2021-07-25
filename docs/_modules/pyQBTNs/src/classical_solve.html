@@ -156,7 +156,8 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyQBTNs.src.classical_solve</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span></span><span class="sd">&quot;&quot;&quot;Classical (local) solver methods.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">neal</span>
@@ -167,7 +168,7 @@
 
 <div class="viewcode-block" id="call_simulated_annealing"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.classical_solve.call_simulated_annealing">[docs]</a><span class="k">def</span> <span class="nf">call_simulated_annealing</span><span class="p">(</span><span class="n">QUBO</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Call the simulated annealing method from the DWave API</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -181,7 +182,7 @@
 <span class="sd">    out_vector : list</span>
 <span class="sd">        list of dictionaries, where each dictionary is a good solution to the QUBO.</span>
 <span class="sd">    CPU_TIME : float</span>
-<span class="sd">        CPU time.</span>
+<span class="sd">        CPU process time.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sampler</span> <span class="o">=</span> <span class="n">neal</span><span class="o">.</span><span class="n">SimulatedAnnealingSampler</span><span class="p">()</span>
@@ -212,7 +213,7 @@
 <span class="sd">    out_vector : list</span>
 <span class="sd">        list of dictionaries, where each dictionary is a good solution to the QUBO.</span>
 <span class="sd">    CPU_TIME : float</span>
-<span class="sd">        CPU time.</span>
+<span class="sd">        CPU process time in seconds.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sampler</span> <span class="o">=</span> <span class="n">greedy</span><span class="o">.</span><span class="n">SteepestDescentSolver</span><span class="p">()</span>
@@ -235,7 +236,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    QUBO : dictionary</span>
 <span class="sd">        quadratic unconstrained binary optimization problem.</span>
-<span class="sd">    random_state : TYPE, optional</span>
+<span class="sd">    random_state : integer, optional</span>
 <span class="sd">        random seed. The default is 42.</span>
 
 <span class="sd">    Returns</span>
@@ -243,7 +244,7 @@
 <span class="sd">    out_vector : list</span>
 <span class="sd">        list of dictionaries, where each dictionary is a good solution to the QUBO.</span>
 <span class="sd">    CPU_TIME : float</span>
-<span class="sd">        CPU time.</span>
+<span class="sd">        CPU process time.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>
@@ -259,27 +260,35 @@
 
 <div class="viewcode-block" id="classical_single_QUBO"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.classical_solve.classical_single_QUBO">[docs]</a><span class="k">def</span> <span class="nf">classical_single_QUBO</span><span class="p">(</span><span class="n">As</span><span class="p">,</span> <span class="n">xs</span><span class="p">,</span> <span class="n">all_QUBOS</span><span class="p">,</span> <span class="n">solver_method</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="sd">    Uses classical QUBO solvers to solve individual QUBOs at a time</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    As : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    xs : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    all_QUBOS : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    solver_method : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    random_state : TYPE, optional</span>
-<span class="sd">        DESCRIPTION. The default is 42.</span>
+<span class="sd">    As : dictionary</span>
+<span class="sd">        In this case the dictionary has a single entry because we are only solving one QUBO at a time.</span>
+<span class="sd">        The single value is a numpy array A from x=Ab (we are solving for the column vector b).</span>
+<span class="sd">        The key is tracking which column-factorization sub-problem this A is from.</span>
+<span class="sd">    xs : dictionary</span>
+<span class="sd">        In this case the dictionary has a single entry because we are only solving one QUBO at a time.</span>
+<span class="sd">        The only value is a numpy array (vector) of x in x=Ab. The only key is tracking which column-</span>
+<span class="sd">        factorization sub-problem this x is from.</span>
+<span class="sd">    all_QUBOS : dictionary</span>
+<span class="sd">        In this case the dictionary has a single entry because we are only solving one QUBO at a time.</span>
+<span class="sd">        The QUBO is the only value, and the key is the QUBO integer label from the embedding.</span>
+<span class="sd">    solver_method : string</span>
+<span class="sd">        QUBO solver method. Allowed values are &quot;classical-simulated-annealing&quot;,</span>
+<span class="sd">        &quot;classical-steepest-descent&quot;,</span>
+<span class="sd">        &quot;classsical-tabu-sampler&quot;,</span>
+<span class="sd">        &quot;d-wave&quot;</span>
+<span class="sd">    random_state : integer, optional</span>
+<span class="sd">        random state seed. The default is 42.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    bcol_solution_dict : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
-<span class="sd">    TOTAL_CPU_TIME : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    bcol_solution_dict : dict</span>
+<span class="sd">        Keys are the column-factorization sub problem index, and values are the solved b-column solutions.</span>
+<span class="sd">    TOTAL_CPU_TIME : float</span>
+<span class="sd">        total CPU process time.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">As</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Something went wrong&quot;</span>
@@ -303,26 +312,25 @@
 
 <div class="viewcode-block" id="batch_classical_single_QUBO"><a class="viewcode-back" href="../../../pyQBTNs.src.html#pyQBTNs.src.classical_solve.batch_classical_single_QUBO">[docs]</a><span class="k">def</span> <span class="nf">batch_classical_single_QUBO</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">solver_method</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Solves the individual column factorization problems using classical algorithms such as</span>
-<span class="sd">    simulated anealing.</span>
+<span class="sd">    Solves the individual column factorization problems using classical algorithms such as simulated anealing.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    X : 2-d numpy array</span>
 <span class="sd">        matrix to be factored.</span>
-<span class="sd">    N : integer</span>
+<span class="sd">    N : int</span>
 <span class="sd">        column index.</span>
 <span class="sd">    A : 2-d numpy array</span>
 <span class="sd">        Initial state.</span>
 <span class="sd">    B : 2-d numpy array</span>
 <span class="sd">        Initial state. Not used. Here for the logical consistency.</span>
-<span class="sd">    random_state : TYPE, optional</span>
-<span class="sd">        DESCRIPTION. The default is 42.</span>
+<span class="sd">    random_state : int, optional</span>
+<span class="sd">        random state. The default is 42.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    out : list</span>
-<span class="sd">        list of columns.</span>
+<span class="sd">        list of (b) columns which solve the matrix factorization problem of X=AB.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
