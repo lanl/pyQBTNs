@@ -879,7 +879,7 @@ Hierarchical Tucker algorithm.</p>
 </div>
 <div class="section" id="module-pyQBTNs.src.utils">
 <span id="pyqbtns-src-utils-module"></span><h2>pyQBTNs.src.utils module<a class="headerlink" href="#module-pyQBTNs.src.utils" title="Permalink to this headline">¶</a></h2>
-<p>Utilities.</p>
+<p>Utility methods.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyQBTNs.src.utils.Start_DWave_connection">
 <span class="sig-prename descclassname"><span class="pre">pyQBTNs.src.utils.</span></span><span class="sig-name descname"><span class="pre">Start_DWave_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyQBTNs/src/utils.html#Start_DWave_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyQBTNs.src.utils.Start_DWave_connection" title="Permalink to this definition">¶</a></dt>
@@ -1072,7 +1072,7 @@ array (matrix) or higher order (tensor).</p></li>
 <dd class="field-even"><p><strong>ham</strong> – Number of unequal elements between the two boolean numpy arrays.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>integer</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1092,10 +1092,10 @@ A is the other factor of X (or approximate factor of X) we are using.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>all_polynomials</strong> – DESCRIPTION.</p>
+<dd class="field-even"><p><strong>all_polynomials</strong> – Higher order polynomial.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>TYPE</p>
+<dd class="field-odd"><p>Sympy polynomial</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1132,11 +1132,11 @@ choice is used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vectors</strong> (<em>List</em>) – Raw vectors from the D-Wave solver. The length is equal
+<li><p><strong>vectors</strong> (<em>list</em>) – Raw vectors from the D-Wave solver. The length is equal
 to the number of anneals. Each element in vectors is a list of
 length equal to the number of qubits on thee D-Wave device. For the
 case of a D-Wave 2000Q, the number of qubits  is 2048 (including active and inactive).</p></li>
-<li><p><strong>problem_embedding</strong> (<em>Dict</em>) – Logical embedding for the problem that D-Wave solved. Keys are
+<li><p><strong>problem_embedding</strong> (<em>dict</em>) – Logical embedding for the problem that D-Wave solved. Keys are
 variable names, and values are a list of physical qubits representing
 the logical state of the variable (key).</p></li>
 </ul>
@@ -1148,7 +1148,7 @@ has the same keys as problem_embedding, and the values
 are either 0 1 since this function handles QUBOS.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List</p>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>

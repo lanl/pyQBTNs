@@ -156,7 +156,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for pyQBTNs.src.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Utilities.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Utility methods.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -256,7 +256,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    ham : integer</span>
+<span class="sd">    ham : int</span>
 <span class="sd">        Number of unequal elements between the two boolean numpy arrays.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -279,19 +279,19 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    vectors : List</span>
+<span class="sd">    vectors : list</span>
 <span class="sd">        Raw vectors from the D-Wave solver. The length is equal</span>
 <span class="sd">        to the number of anneals. Each element in vectors is a list of</span>
 <span class="sd">        length equal to the number of qubits on thee D-Wave device. For the</span>
 <span class="sd">        case of a D-Wave 2000Q, the number of qubits  is 2048 (including active and inactive).</span>
-<span class="sd">    problem_embedding : Dict</span>
+<span class="sd">    problem_embedding : dict</span>
 <span class="sd">        Logical embedding for the problem that D-Wave solved. Keys are</span>
 <span class="sd">        variable names, and values are a list of physical qubits representing</span>
 <span class="sd">        the logical state of the variable (key).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    all_vectors_unembedded : List</span>
+<span class="sd">    all_vectors_unembedded : list</span>
 <span class="sd">        List of dictionaries. The number of dictionaries is equal to</span>
 <span class="sd">        the length of thee input variable vectors. Each dictionary is</span>
 <span class="sd">        has the same keys as problem_embedding, and the values</span>
@@ -414,8 +414,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    all_polynomials : TYPE</span>
-<span class="sd">        DESCRIPTION.</span>
+<span class="sd">    all_polynomials : Sympy polynomial</span>
+<span class="sd">        Higher order polynomial.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">indicator</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>

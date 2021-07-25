@@ -1,4 +1,4 @@
-"""Utilities."""
+"""Utility methods."""
 
 import random
 import json
@@ -98,7 +98,7 @@ def get_hamming_distance(M1, M2):
 
     Returns
     -------
-    ham : integer
+    ham : int
         Number of unequal elements between the two boolean numpy arrays.
 
     """
@@ -121,19 +121,19 @@ def majority_vote(vectors, problem_embedding, random_state=42):
 
     Parameters
     ----------
-    vectors : List
+    vectors : list
         Raw vectors from the D-Wave solver. The length is equal
         to the number of anneals. Each element in vectors is a list of
         length equal to the number of qubits on thee D-Wave device. For the
         case of a D-Wave 2000Q, the number of qubits  is 2048 (including active and inactive).
-    problem_embedding : Dict
+    problem_embedding : dict
         Logical embedding for the problem that D-Wave solved. Keys are
         variable names, and values are a list of physical qubits representing
         the logical state of the variable (key).
 
     Returns
     -------
-    all_vectors_unembedded : List
+    all_vectors_unembedded : list
         List of dictionaries. The number of dictionaries is equal to
         the length of thee input variable vectors. Each dictionary is
         has the same keys as problem_embedding, and the values
@@ -256,8 +256,8 @@ def get_polynomial(A, V, indicator):
 
     Returns
     -------
-    all_polynomials : TYPE
-        DESCRIPTION.
+    all_polynomials : Sympy polynomial
+        Higher order polynomial.
 
     """
     if indicator == 1:
