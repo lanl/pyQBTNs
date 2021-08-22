@@ -176,7 +176,7 @@ class QBTNs():
     def get_reconstructed_tensor(self):
         """
         Gets the boolean numpy array consstructed from the factors found by
-        the factorization algorithm.
+        the tensor factorization algorithm.
 
         Returns
         -------

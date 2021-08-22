@@ -99,7 +99,7 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
 ## How to Cite pyQBTNs?
 ```latex
 @MISC{Pelofske2021_pyQBTNs,
-    author = {E. {Pelofske} and H. {Djidjev} and D. {O'Malley} and M. E. {Eren} and G. {Hahn} and B. S. {Alexandrov}},
+    author = {E. {Pelofske} and H. {Djidjev} and D. {O'Malley} and M. E. {Eren} and B. S. {Alexandrov}},
     title = {pyQBTNs},
     year = {2021},
     publisher = {GitHub},
