@@ -116,6 +116,15 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
     archivePrefix={arXiv},
     primaryClass={quant-ph}
 }
+
+@misc{pelofske2021quantum,
+      title={Quantum Annealing Algorithms for Boolean Tensor Networks}, 
+      author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
+      year={2021},
+      eprint={2107.13659},
+      archivePrefix={arXiv},
+      primaryClass={quant-ph}
+}
 ```
 
 
