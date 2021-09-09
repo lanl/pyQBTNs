@@ -160,9 +160,8 @@
             
   <div class="section" id="welcome-to-pyqbtns-s-documentation">
 <h1>Welcome to pyQBTNs’s documentation!<a class="headerlink" href="#welcome-to-pyqbtns-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are described in <span id="id1">[<a class="reference internal" href="#id4">PHOMalley+21</a>]</span> and <span id="id2">[<a class="reference internal" href="#id5">OMalleyDA20</a>]</span>.</p>
-<p>pyQBTNs includes five different boolean tensor factorization methods, making up three distinct types of tensor networks. pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm.</p>
-<p>In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)</p>
+<p>pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are introduced in [1].</p>
+<p>pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)</p>
 </div>
 <div class="section" id="resources">
 <h1>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h1>
@@ -258,22 +257,31 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <div class="section" id="how-to-cite-pyqbtns">
 <h1>How to Cite pyQBTNs?<a class="headerlink" href="#how-to-cite-pyqbtns" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">@MISC{Pelofske2021_pyQBTNs,</span>
-<span class="go">  author = {E. {Pelofske} and H. {Djidjev} and D. {O&#39;Malley} and M. E. {Eren} and G. {Hahn} and B. S. {Alexandrov}},</span>
-<span class="go">  title = {pyQBTNs},</span>
-<span class="go">  year = {2021},</span>
-<span class="go">  publisher = {GitHub},</span>
-<span class="go">  journal = {GitHub repository},</span>
-<span class="go">  doi = {10.5281/zenodo.4876527},</span>
-<span class="go">  howpublished = {\url{https://github.com/lanl/pyQBTNs}}</span>
+<span class="go">    author = {E. {Pelofske} and H. {Djidjev} and D. {O&#39;Malley} and M. E. {Eren} and B. S. {Alexandrov}},</span>
+<span class="go">    title = {pyQBTNs},</span>
+<span class="go">    year = {2021},</span>
+<span class="go">    publisher = {GitHub},</span>
+<span class="go">    journal = {GitHub repository},</span>
+<span class="go">    doi = {10.5281/zenodo.4876527},</span>
+<span class="go">    howpublished = {\url{https://github.com/lanl/pyQBTNs}}</span>
 <span class="go">}</span>
 
 <span class="go">@misc{pelofske2021boolean,</span>
-<span class="go">  title={Boolean Hierarchical Tucker Networks on Quantum Annealers},</span>
-<span class="go">  author={Elijah Pelofske and Georg Hahn and Daniel O&#39;Malley and Hristo N. Djidjev and Boian S. Alexandrov},</span>
-<span class="go">  year={2021},</span>
-<span class="go">  eprint={2103.07399},</span>
-<span class="go">  archivePrefix={arXiv},</span>
-<span class="go">  primaryClass={quant-ph}</span>
+<span class="go">    title={Boolean Hierarchical Tucker Networks on Quantum Annealers},</span>
+<span class="go">    author={Elijah Pelofske and Georg Hahn and Daniel O&#39;Malley and Hristo N. Djidjev and Boian S. Alexandrov},</span>
+<span class="go">    year={2021},</span>
+<span class="go">    eprint={2103.07399},</span>
+<span class="go">    archivePrefix={arXiv},</span>
+<span class="go">    primaryClass={quant-ph}</span>
+<span class="go">}</span>
+
+<span class="go">@misc{pelofske2021quantum,</span>
+<span class="go">      title={Quantum Annealing Algorithms for Boolean Tensor Networks},</span>
+<span class="go">      author={Elijah Pelofske and Georg Hahn and Daniel O&#39;Malley and Hristo N. Djidjev and Boian S. Alexandrov},</span>
+<span class="go">      year={2021},</span>
+<span class="go">      eprint={2107.13659},</span>
+<span class="go">      archivePrefix={arXiv},</span>
+<span class="go">      primaryClass={quant-ph}</span>
 <span class="go">}</span>
 </pre></div>
 </div>
@@ -326,16 +334,7 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </div>
 <div class="section" id="references">
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
-<p id="id3"><dl class="citation">
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">OMalleyDA20</a></span></dt>
-<dd><p>Daniel O’Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Tucker-1 boolean tensor factorization with quantum annealers. In <em>2020 International Conference on Rebooting Computing (ICRC)</em>, volume, 58–65. 2020. <a class="reference external" href="https://doi.org/10.1109/ICRC2020.2020.00002">doi:10.1109/ICRC2020.2020.00002</a>.</p>
-</dd>
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">PHOMalley+21</a></span></dt>
-<dd><p>Elijah Pelofske, Georg Hahn, Daniel O'Malley, Hristo N. Djidjev, and Boian S. Alexandrov. Boolean hierarchical tucker networks on quantum annealers. 2021. <a class="reference external" href="https://arxiv.org/abs/2103.07399">arXiv:2103.07399</a>.</p>
-</dd>
-</dl>
-</p>
-<div class="toctree-wrapper compound">
+<span class="target" id="id1"></span><div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="QBTNs.html">pyQBTNs.QBTNs API</a><ul>

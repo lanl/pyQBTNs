@@ -6,11 +6,9 @@
 Welcome to pyQBTNs's documentation!
 ===================================
 
-pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are described in :cite:p:`pelofske2021boolean` and :cite:p:`Daniel2020`. 
+pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are introduced in [1].
 
-pyQBTNs includes five different boolean tensor factorization methods, making up three distinct types of tensor networks. pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm.
-
-In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)
+pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)
 
 Resources
 ========================================
@@ -110,22 +108,31 @@ How to Cite pyQBTNs?
 .. code-block:: console
 
     @MISC{Pelofske2021_pyQBTNs,
-      author = {E. {Pelofske} and H. {Djidjev} and D. {O'Malley} and M. E. {Eren} and G. {Hahn} and B. S. {Alexandrov}},
-      title = {pyQBTNs},
-      year = {2021},
-      publisher = {GitHub},
-      journal = {GitHub repository},
-      doi = {10.5281/zenodo.4876527},
-      howpublished = {\url{https://github.com/lanl/pyQBTNs}}
+        author = {E. {Pelofske} and H. {Djidjev} and D. {O'Malley} and M. E. {Eren} and B. S. {Alexandrov}},
+        title = {pyQBTNs},
+        year = {2021},
+        publisher = {GitHub},
+        journal = {GitHub repository},
+        doi = {10.5281/zenodo.4876527},
+        howpublished = {\url{https://github.com/lanl/pyQBTNs}}
     }
 
     @misc{pelofske2021boolean,
-      title={Boolean Hierarchical Tucker Networks on Quantum Annealers}, 
-      author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
-      year={2021},
-      eprint={2103.07399},
-      archivePrefix={arXiv},
-      primaryClass={quant-ph}
+        title={Boolean Hierarchical Tucker Networks on Quantum Annealers}, 
+        author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
+        year={2021},
+        eprint={2103.07399},
+        archivePrefix={arXiv},
+        primaryClass={quant-ph}
+    }
+
+    @misc{pelofske2021quantum,
+          title={Quantum Annealing Algorithms for Boolean Tensor Networks}, 
+          author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
+          year={2021},
+          eprint={2107.13659},
+          archivePrefix={arXiv},
+          primaryClass={quant-ph}
     }
     
     
