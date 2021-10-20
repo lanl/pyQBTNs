@@ -20,7 +20,8 @@ pyQBTNs allows the user to specify local solvers that do not require a connectio
 Resources
 ========================================
 * `Examples <https://github.com/lanl/pyQBTNs/tree/main/examples>`_
-* `Paper <https://arxiv.org/pdf/2103.07399.pdf>`_
+* `Quantum Annealing Algorithms for Boolean Tensor Networks <https://arxiv.org/pdf/2107.13659.pdf>`_
+* `Boolean Hierarchical Tucker Networks on Quantum Annealers <https://arxiv.org/pdf/2103.07399.pdf>`_
 * `Repository <https://github.com/lanl/pyQBTNs>`_
 
 
