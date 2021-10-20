@@ -89,14 +89,15 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
 
 ## Prerequisites
 - [Anaconda](https://docs.anaconda.com/anaconda/install/)(Optional)
+- pyparsing==2.4.7
 - decorator==4.3.0
 - dwave-ocean-sdk>=3.3.0
-- numpy==1.19.2
+- numpy>=1.19.4
 - tensorly>=0.4.5
 - sympy>=1.7.1
-- networkx==2.5
+- networkx>=2.5
 - nimfa>=1.4.0
-- scikit-learn==0.24.1
+- scikit-learn>=0.24.1
 - matplotlib>=3.4.2
 - Pillow>=8.2.0
 
