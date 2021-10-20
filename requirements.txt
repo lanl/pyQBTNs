@@ -1,4 +1,4 @@
-pyparsing>=2.4.7
+pyparsing==2.4.7
 decorator==4.3.0
 dwave-ocean-sdk>=3.3.0
 numpy==1.19.4
