@@ -1,6 +1,6 @@
 decorator==4.3.0
 dwave-ocean-sdk>=3.3.0
-numpy==1.19.2
+numpy==1.19.4
 tensorly>=0.4.5
 sympy>=1.7.1
 networkx==2.5
