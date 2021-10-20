@@ -1,73 +1,34 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>Welcome to pyQBTNs’s documentation! &mdash; pyQBTNs 1.0.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pyQBTNs.QBTNs API" href="QBTNs.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="#" class="icon icon-home"> pyQBTNs
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,104 +36,53 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="QBTNs.html">pyQBTNs.QBTNs API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">pyQBTNs</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="#">pyQBTNs</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Welcome to pyQBTNs’s documentation!</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="welcome-to-pyqbtns-s-documentation">
-<h1>Welcome to pyQBTNs’s documentation!<a class="headerlink" href="#welcome-to-pyqbtns-s-documentation" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="welcome-to-pyqbtns-s-documentation">
+<h1>Welcome to pyQBTNs’s documentation!<a class="headerlink" href="#welcome-to-pyqbtns-s-documentation" title="Permalink to this headline"></a></h1>
+<a class="reference internal image-reference" href="_images/rd100.png"><img alt="RD100" class="align-center" src="_images/rd100.png" style="width: 324.0px; height: 200.0px;" /></a>
 <p>pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are introduced in [1].</p>
 <p>pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)</p>
-</div>
-<div class="section" id="resources">
-<h1>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="resources">
+<h1>Resources<a class="headerlink" href="#resources" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/lanl/pyQBTNs/tree/main/examples">Examples</a></p></li>
 <li><p><a class="reference external" href="https://arxiv.org/pdf/2103.07399.pdf">Paper</a></p></li>
 <li><p><a class="reference external" href="https://github.com/lanl/pyQBTNs">Repository</a></p></li>
 </ul>
-</div>
-<div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
 <p><strong>Option 1: Install using pip</strong></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/lanl/pyQBTNs.git
 </pre></div>
@@ -185,9 +95,9 @@ conda create --name pyQBTNs <span class="nv">python</span><span class="o">=</spa
 python setup.py install
 </pre></div>
 </div>
-</div>
-<div class="section" id="setup-and-verify-d-wave-connection">
-<h1>Setup and Verify D-Wave connection<a class="headerlink" href="#setup-and-verify-d-wave-connection" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="setup-and-verify-d-wave-connection">
+<h1>Setup and Verify D-Wave connection<a class="headerlink" href="#setup-and-verify-d-wave-connection" title="Permalink to this headline"></a></h1>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="#installation">Install pyQBTNs</a></p></li>
 <li><p>Sign up with <a class="reference external" href="https://cloud.dwavesys.com/leap/signup/">D-Wave Leap</a> (Make sure that you have at least 1 minute of QPU time on your free acccount).</p></li>
@@ -202,9 +112,9 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <p class="admonition-title">Note</p>
 <p>For more detailed description of the D-Wave setup process see the <a class="reference external" href="https://github.com/lanl/pyQBTNs/tree/main/tutorials">tutorials</a> or the <a class="reference external" href="https://github.com/MaksimEkin/pyQBTNs/blob/main/examples/D-Wave_matrix_factorization.ipynb">example notebook on D-Wave</a>.</p>
 </div>
-</div>
-<div class="section" id="example-usage">
-<h1>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="example-usage">
+<h1>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline"></a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyQBTNs</span> <span class="kn">import</span> <span class="n">QBTNs</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -237,9 +147,9 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reconstructed Matrix =&quot;</span><span class="p">,</span> <span class="n">qbtns</span><span class="o">.</span><span class="n">get_reconstructed_tensor</span><span class="p">())</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="prerequisites">
-<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="prerequisites">
+<h1>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.anaconda.com/anaconda/install/">Anaconda</a> (Optional)</p></li>
 <li><p>decorator==4.3.0</p></li>
@@ -253,9 +163,9 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <li><p>matplotlib&gt;=3.4.2</p></li>
 <li><p>Pillow&gt;=8.2.0</p></li>
 </ul>
-</div>
-<div class="section" id="how-to-cite-pyqbtns">
-<h1>How to Cite pyQBTNs?<a class="headerlink" href="#how-to-cite-pyqbtns" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="how-to-cite-pyqbtns">
+<h1>How to Cite pyQBTNs?<a class="headerlink" href="#how-to-cite-pyqbtns" title="Permalink to this headline"></a></h1>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">@MISC{Pelofske2021_pyQBTNs,</span>
 <span class="go">    author = {E. {Pelofske} and H. {Djidjev} and D. {O&#39;Malley} and M. E. {Eren} and B. S. {Alexandrov}},</span>
 <span class="go">    title = {pyQBTNs},</span>
@@ -285,9 +195,9 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <span class="go">}</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="authors">
-<h1>Authors<a class="headerlink" href="#authors" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="authors">
+<h1>Authors<a class="headerlink" href="#authors" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><a class="reference external" href="mailto:epelofske&#37;&#52;&#48;lanl&#46;gov">Elijah Pelofske</a> : Information Sciences, Los Alamos National Laboratory</p></li>
 <li><p><a class="reference external" href="mailto:djidjev&#37;&#52;&#48;lanl&#46;gov">Hristo Djidjev</a> : Information Sciences, Los Alamos National Laboratory</p></li>
@@ -295,9 +205,9 @@ python -m unittest TestMatrixFactorizationQuantum.py
 <li><p><a class="reference external" href="mailto:maksim&#37;&#52;&#48;lanl&#46;gov">Maksim Ekin Eren</a> : Advanced Research in Cyber Systems, Los Alamos National Laboratory</p></li>
 <li><p><a class="reference external" href="mailto:boian&#37;&#52;&#48;lanl&#46;gov">Boian S<span>&#46;</span> Alexandrov</a> : Theoretical Division, Los Alamos National Laboratory</p></li>
 </ul>
-</div>
-<div class="section" id="copyright-notice">
-<h1>Copyright Notice<a class="headerlink" href="#copyright-notice" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="copyright-notice">
+<h1>Copyright Notice<a class="headerlink" href="#copyright-notice" title="Permalink to this headline"></a></h1>
 <p>© 2021. Triad National Security, LLC. All rights reserved.
 This program was produced under U.S. Government contract 89233218CNA000001 for Los Alamos
 National Laboratory (LANL), which is operated by Triad National Security, LLC for the U.S.
@@ -308,9 +218,9 @@ nonexclusive, paid-up, irrevocable worldwide license in this material to reprodu
 derivative works, distribute copies to the public, perform publicly and display publicly, and to permit
 others to do so.</p>
 <p><strong>LANL C Number: C21027</strong></p>
-</div>
-<div class="section" id="license">
-<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="license">
+<h1>License<a class="headerlink" href="#license" title="Permalink to this headline"></a></h1>
 <p>Redistribution and use in source and binary forms, with or without modification, are permitted
 provided that the following conditions are met:</p>
 <p>1. Redistributions of source code must retain the above copyright notice, this list of conditions and
@@ -331,11 +241,11 @@ OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-</div>
-<div class="section" id="references">
-<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h1>
 <span class="target" id="id1"></span><div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="QBTNs.html">pyQBTNs.QBTNs API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="QBTNs.html#pyqbtns-pyqbtns-module">pyQBTNs.pyQBTNs module</a></li>
@@ -348,61 +258,44 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="QBTNs.html" class="btn btn-neutral float-right" title="pyQBTNs.QBTNs API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, LANL.
-
-    </p>
+    <p>&#169; Copyright 2021, LANL.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
