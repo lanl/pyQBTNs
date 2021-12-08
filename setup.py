@@ -24,7 +24,7 @@ with open('requirements.txt', 'r') as f:
 setup(
     name='pyQBTNs',
     version=__version__,
-    author='Elijah Pelofske, Hristo Djidjev, Dan O\'Malley, Maksim E. Eren, Georg Hahn, Boian S. Alexandrov',
+    author='Elijah Pelofske, Hristo Djidjev, Dan O\'Malley, Maksim E. Eren, Boian S. Alexandrov',
     author_email='epelofske@lanl.gov',
     description='pyQBTNs: Python Quantum Boolean Tensor Networks',
     long_description=LONG_DESCRIPTION,
@@ -36,10 +36,10 @@ setup(
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Programming Language :: Python :: 3.7.3', # put the correct python version here
+        'Programming Language :: Python :: 3.9.7', # put the correct python version here
         'Topic :: Software Development :: Libraries'
     ],
-    python_requires='>=3.7.3', # put the correct python version here
+    python_requires='>=3.9.7', # put the correct python version here
     install_requires=INSTALL_REQUIRES,
     license='License :: BSD3 License',
 )
