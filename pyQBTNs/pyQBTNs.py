@@ -37,8 +37,32 @@ class QBTNs():
         solver_method : str, optional
             Options are : "d-wave", "classical-simulated-annealing", "classical-steepest-descent", "classsical-tabu-sampler". Default is "classical-simulated-annealing"
 
+        NNSVD_INITIAL_STATE_FLAG : integer, optional
+            Passeed to the NNSVD initial state generator. The default is 0.
+
+        maximum_iterations : integer, optional
+            Absolute upper bound on the number of iterations for each full matrix factorization sub-routine. The default is 500.
+
+        maximum_converged_iterations : integer, optional
+            Secondary termination criteria for the iterative matrix factorization sub-routine. Terminates the algorithm if the error rate has converged to the same error rate (hamming distance).
+            Default is 100.
+
+        number_of_random_initial_states : integer, optional
+            Numbere of random initial states to try. The default is 100.
+
+        random_initial_state_lower_bound : float, optional
+            Lower bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.01.
+
+        random_initial_state_upper_bound : float, optional
+            Upper bound for uniform random proportion for generating random initial states for the matrix factorization. The default is 0.99.
+
+        parallel_bool : Boolean, optional
+            Set to True in order to use parallel quantum annealing. False in order to not use parallel QA. The default is False. 
+            This effectively means that we solve independent QUBOs using the same call to a solver.
+
         random_state : int, optional
             Integer to set random seeds in the algorithm.
+
 
         """
 
@@ -121,7 +145,7 @@ class QBTNs():
 
         """
         assert len(Tensor.shape) > 1, "Tensor must be at least 2 dimensional"
-        assert Rank > 1, "Rank must be greater than 2"
+        assert Rank > 1, "Rank must be greater than 1"
         assert isinstance(Rank, int), "Rank must be an integer"
 
         if self.method == "Matrix_Factorization":
