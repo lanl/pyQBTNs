@@ -30,7 +30,7 @@ pip install git+https://github.com/lanl/pyQBTNs
 ```shell
 git clone https://github.com/lanl/pyQBTNs
 cd pyQBTNs
-conda create --name pyQBTNs python=3.7.3
+conda create --name pyQBTNs python=3.9.7
 source activate pyQBTNs
 python setup.py install
 ```
