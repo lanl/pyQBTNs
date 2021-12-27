@@ -96,12 +96,12 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
 - dwave-ocean-sdk>=3.3.0
 - numpy>=1.19.4
 - tensorly>=0.4.5
-- sympy>=1.7.1
 - networkx>=2.5
 - nimfa>=1.4.0
 - scikit-learn>=0.24.1
 - matplotlib>=3.4.2
 - Pillow>=8.2.0
+- symengine>=0.8.1
 
 ## How to Cite pyQBTNs?
 ```latex
