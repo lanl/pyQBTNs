@@ -5,9 +5,8 @@ import json
 import numpy as np
 import networkx as nx
 import dimod
-from sympy import symbols, expand
 from dwave.cloud import Client
-
+from symengine import var
 
 def Start_DWave_connection():
     """
@@ -32,6 +31,89 @@ def Start_DWave_connection():
     connectivity_graph = nx.Graph(list(A))
     return connectivity_graph, DWave_solver, list(solver_name.values())[0]
 
+####################################
+# QUBO methods
+####################################
+def get_T_F_vecs(xcol):
+    T = []
+    F = []
+    for (i, data) in enumerate(xcol):
+        if data == True:
+            T.append(i)
+        if data == False:
+            F.append(i)
+    return T, F
+def get_QUBO(A, x):
+	true_vec, false_vec = get_T_F_vecs(x)
+	variables = ""
+	for idx in range(len(x)):
+		variables += "x"+str(idx)+" "
+	all_symbol_variables = list(var(variables))
+	true_polynomial = 0
+	for col_index in true_vec:
+		row = A[col_index]
+		used_variables = []
+		for (idx, value) in enumerate(row):
+			if value == True:
+				used_variables.append(idx)
+		if len(used_variables) == 0:
+			continue
+		symbols = [all_symbol_variables[i] for i in used_variables]
+		combined = 1
+		for symb in symbols:
+			combined = combined*(1-symb)
+		combined = 1-combined
+		try:
+			combined = combined.expand()
+		except:
+			pass
+		combined = -1*combined
+		true_polynomial += combined
+	false_polynomial = 0
+	for col_index in false_vec:
+		row = A[col_index]
+		used_variables = []
+		for (idx, value) in enumerate(row):
+			if value == True:
+				used_variables.append(idx)
+		if len(used_variables) == 0:
+			continue
+		symbols = [all_symbol_variables[i] for i in used_variables]
+		combined = 1
+		for symb in symbols:
+			combined = combined*(1-symb)
+		combined = 1-combined
+		try:
+			combined = combined.expand()
+		except:
+			pass
+		false_polynomial += combined
+	polynomial = true_polynomial + false_polynomial
+	try:
+		polynomial = polynomial.expand()
+	except:
+		return "EMPTY"
+	HUBO_dictionary = polynomial.as_coefficients_dict()
+	HUBO = {}
+	for k in HUBO_dictionary:
+		try:
+			if type(int(k)) is int:
+				continue
+		except:
+			term = str(k)
+			term = term.replace("x", "")
+			if "*" not in term:
+				HUBO[(int(term),)] = HUBO_dictionary[k]
+			else:
+				terms = list(term.split("*"))
+				terms = tuple([int(a) for a in terms])
+				HUBO[terms] = HUBO_dictionary[k]
+	if len(HUBO) == 0:
+		return "EMPTY"
+	coefs = [abs(a) for a in list(HUBO.values())]
+	HUBO_TO_QUBO_PENALTY_FACTOR = max(coefs)
+	QUBO = dimod.make_quadratic(HUBO, HUBO_TO_QUBO_PENALTY_FACTOR, dimod.BINARY).to_qubo()[0]
+	return QUBO
 
 def read_complete_embedding():
     """
@@ -189,102 +271,6 @@ def delete_keys_from_dict(dictionary, keys_to_remove):
     return dictionary
 
 
-def qubo(vars):
-    """
-    expands out the polynomial so we can extract the coefficients for each variable
-
-    Parameters
-    ----------
-    vars : List
-        List of sympy Symbols().
-
-    Returns
-    -------
-    result : Sympy expression
-        QUBO that has been expanded.
-
-    """
-    combined = 1
-    for i in vars:
-        combined = combined*(1-i)
-    result = expand(1-combined)
-    return result
-
-
-def get_T_F_vecs(col):
-    """
-    Input of a single column vector, returns the variable indices for both
-    True and False values in the vector.
-
-    Parameters
-    ----------
-    col : list or numpy array
-        Input column vector.
-
-    Returns
-    -------
-    T : list
-        Variable indicies for True variable state.
-    F : list
-        Variable indicies for True variable state.
-
-    """
-    T = []
-    F = []
-    for (i, data) in enumerate(col):
-        if data == 1:
-            T.append(i)
-        if data == 0:
-            F.append(i)
-    return T, F
-
-
-def get_polynomial(A, V, indicator):
-    """
-    returns Sympy polynomial. This polynmial is a
-    HUBO (Higher order Unconstrained Binary Optimization) problem.
-
-    Parameters
-    ----------
-    A : Boolean numpy array
-        matrix A in x=Ab.
-    V : list
-        Vector passed from the method get_T_F_vecs().
-    indicator : bool
-        Boolean variable for storing what coefficient we need in front of the polynomial
-        A is the other factor of X (or approximate factor of X) we are using.
-
-    Returns
-    -------
-    all_polynomials : Sympy polynomial
-        Higher order polynomial.
-
-    """
-    if indicator == 1:
-        prefix = -1
-    else:
-        prefix = 1
-    all_polynomials = 0
-    for j in V:
-        if len(V) == 0:
-            break
-        vec = A[j]  # Gets the jth row of A
-        c = -1
-        vars = ""
-        for value in vec:
-            c += 1
-            if value == 1:
-                vars += "x"+str(c)+" "
-        if vars == "":
-            continue
-        variables = symbols(vars)
-        if type(variables) is tuple:
-            tmp_poly = prefix*qubo(list(variables))
-        else:
-            tmp_poly = prefix*qubo([variables])
-        all_polynomials += tmp_poly
-    return all_polynomials
-
 
 def get_fixed_embedding(QUBO, complete_embedding, random_state=42):
     """
@@ -322,59 +308,6 @@ def get_fixed_embedding(QUBO, complete_embedding, random_state=42):
     for i in range(len(linear_variables)):
         QUBO_embedding[linear_variables[i]] = complete_embedding[complete_vars[i]]
     return QUBO_embedding
-
-
-def get_qubo(col, A, bcol_len, random_state=42):
-    """
-    Given an input of a column factorization problem, i.e. x=Ab where x and b are vectors
-    and A is amtrix, we  want to find b given x and A.
-
-    Parameters
-    ----------
-    col : list or numpy array
-        x-column in the problem x=Ab.
-    A : Boolean numpy array
-        matrix A in x=Ab.
-    bcol_len : int
-        expected length of the b-column solution vector. Also equal to rank.
-    random_state : int, optional
-        random state. The default is 42.
-
-    Returns
-    -------
-    QUBO : dict
-        QUBO created from the HUBO.
-
-    """
-    random.seed(random_state)
-
-    T, F = get_T_F_vecs(col)
-    all_polynomials = 0
-    all_polynomials += get_polynomial(A, T, 1)
-    all_polynomials += get_polynomial(A, F, 0)
-    if type(all_polynomials) is int:  # In this condition, the state does not matter do we return random values
-        tmp = []
-        for i in range(bcol_len):
-            tmp.append(random.choice([0, 1]))
-        return "NA"
-    HUBO = all_polynomials.as_coefficients_dict()  # Error here means we need to just use a random state
-    HUBO_dict = {}
-    for a in HUBO:  # Convert polynomial to dictionary format we want
-        term = ()
-        s = str(a).split("*")
-        if len(s) == 1:
-            tmp = int(s[0].strip("x"))
-            term = (tmp,)
-        else:
-            for i in s:
-                tmp = int(i.strip("x"))
-                term += (tmp,)
-        HUBO_dict[term] = float(HUBO[a])
-    coefs = [abs(a) for a in list(HUBO_dict.values())]
-    HUBO_TO_QUBO_PENALTY_FACTOR = max(coefs)
-    QUBO = dimod.make_quadratic(HUBO_dict, HUBO_TO_QUBO_PENALTY_FACTOR, dimod.BINARY).to_qubo()[0]
-    return QUBO
-
 
 def column_solve_postprocess(b_cols, xcol, A):
     """

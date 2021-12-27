@@ -66,7 +66,9 @@ RANK = 3 ### Factorization rank
 
 np.random.seed(42)
 A = np.random.choice(a=[False, True], size=(N1, RANK), p=[p, 1-p])
+A = np.array(A, dtype=bool)
 B = np.random.choice(a=[False, True], size=(RANK, N2), p=[p, 1-p])
+B = np.array(B, dtype=bool)
 X = np.matmul(A, B)
 
 print("A =", A)

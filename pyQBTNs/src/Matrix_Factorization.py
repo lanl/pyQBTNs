@@ -200,7 +200,9 @@ class Matrix_Factorization():
                                self.random_initial_state_upper_bound)
 
             A_init = np.random.choice(a=[False, True], size=(N1, RANK), p=[p, 1-p])
+            A_init = np.array(A_init, dtype=bool)
             B_init = np.random.choice(a=[False, True], size=(RANK, N2), p=[p, 1-p])
+            B_init = np.array(B_init, dtype=bool)
             A, B, indicator, error_tracking, error_tracking_data = self.factor_matrix(
                 X, RANK, A_init, B_init)
 

@@ -5,7 +5,7 @@ import itertools
 import neal
 from tabu import TabuSampler
 import greedy
-from .utils import get_qubo, delete_keys_from_dict, get_bcols_from_samples, filter_out_stored_QUBOs, combine_QUBO_storage, column_solve_postprocess, remove_duplicate_QUBO
+from .utils import get_QUBO, delete_keys_from_dict, get_bcols_from_samples, filter_out_stored_QUBOs, combine_QUBO_storage, column_solve_postprocess, remove_duplicate_QUBO
 
 
 def call_simulated_annealing(QUBO, random_state=42):
@@ -186,8 +186,8 @@ def batch_classical_single_QUBO(X, N, A, B, solver_method, random_state=42):
     no_dwave_counter = []
     for col_index in range(N):
         xcol = X[:, col_index]
-        QUBO = get_qubo(xcol, A, RANK)
-        if QUBO == "NA":
+        QUBO = get_QUBO(A, xcol)
+        if QUBO == "EMPTY":
             tmp = []
             for i in range(RANK):
                 tmp.append(random.choice([0, 1]))

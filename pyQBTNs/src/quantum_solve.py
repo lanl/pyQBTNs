@@ -3,7 +3,7 @@ import random
 import itertools
 import dimod
 from dwave import embedding
-from .utils import Start_DWave_connection, read_rank3_parallel_QA_embeddings, read_complete_embedding, map_embedding_to_QUBO, get_fixed_embedding, majority_vote, delete_keys_from_dict, get_bcols_from_samples, column_solve_postprocess, get_qubo, combine_QUBO_storage, remove_duplicate_QUBO, filter_out_stored_QUBOs
+from .utils import Start_DWave_connection, read_rank3_parallel_QA_embeddings, read_complete_embedding, map_embedding_to_QUBO, get_fixed_embedding, majority_vote, delete_keys_from_dict, get_bcols_from_samples, column_solve_postprocess, get_QUBO, combine_QUBO_storage, remove_duplicate_QUBO, filter_out_stored_QUBOs
 
 
 def parallel_quantum_annealing(all_embs, As, xs, all_QUBOS, connectivity_graph, DWave_solver):
@@ -36,7 +36,7 @@ def parallel_quantum_annealing(all_embs, As, xs, all_QUBOS, connectivity_graph, 
     DWAVE_NUMBER_OF_ANNEALS_FOR_EACH_RANK = {
         2: 200, 3: 400, 4: 600, 5: 800, 6: 1000, 7: 4000, 8: 5000}
     UTC_PREFACTOR = 1.5
-    params = {"num_reads": DWAVE_NUMBER_OF_ANNEALS_FOR_EACH_RANK[RANK], "annealing_time": 1}
+    params = {"num_reads": DWAVE_NUMBER_OF_ANNEALS_FOR_EACH_RANK[RANK], "annealing_time": 20}
     combine_QUBOs = {}
     all_QUBO_embeddings = {}
     index = -1
@@ -113,8 +113,8 @@ def batch_parallel_quantum_annealing(X, N, A, B, random_state=42):
     no_dwave_counter = []
     for col_index in range(N):
         xcol = X[:, col_index]
-        QUBO = get_qubo(xcol, A, A.shape[1])
-        if QUBO == "NA":
+        QUBO = get_QUBO(A, xcol)
+        if QUBO == "EMPTY":
             tmp = []
             for i in range(RANK):
                 tmp.append(random.choice([0, 1]))
@@ -186,7 +186,7 @@ def quantum_annealing(As, xs, all_QUBOS, connectivity_graph, DWave_solver, compl
     x = xs[list(xs.keys())[0]]
     QUBO = all_QUBOS[list(all_QUBOS.keys())[0]]
     RANK = A.shape[1]
-    params = {"num_reads": DWAVE_NUMBER_OF_ANNEALS_FOR_EACH_RANK[RANK], "annealing_time": 1}
+    params = {"num_reads": DWAVE_NUMBER_OF_ANNEALS_FOR_EACH_RANK[RANK], "annealing_time": 20}
     bqm = dimod.BinaryQuadraticModel.from_qubo(QUBO)
     QUBO_EMBEDDING = map_embedding_to_QUBO(QUBO, complete_embedding)
     chain_strength_fixed = embedding.chain_strength.uniform_torque_compensation(
@@ -246,8 +246,8 @@ def batch_quantum_annealing(X, N, A, B, random_state=42):
     no_dwave_counter = []
     for col_index in range(N):
         xcol = X[:, col_index]
-        QUBO = get_qubo(xcol, A, RANK)
-        if QUBO == "NA":
+        QUBO = get_QUBO(A, xcol)
+        if QUBO == "EMPTY":
             tmp = []
             for i in range(RANK):
                 tmp.append(random.choice([0, 1]))
