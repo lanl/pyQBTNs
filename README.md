@@ -12,7 +12,7 @@
 
 pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are introduced in [1] and [2].
 
-pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm)
+pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the quantum annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm).
 
 <div align="center", style="font-size: 50px">
 
@@ -41,7 +41,7 @@ python setup.py install
 2. Sign up with [D-Wave Leap](https://cloud.dwavesys.com/leap/signup/).
     - Make sure that you have at least 1 minute of QPU time on your free acccount.
 3. Set up [D-Wave config file](https://docs.ocean.dwavesys.com/en/stable/overview/sapi.html).
-    - You can use either an **Advantage** system or a **2000Q** system, but NOT a **Hybrid** solver
+    - You can use either an **Advantage** system or a **2000Q** system, but NOT a **Hybrid** solver. The Hybrid solvers are partially classical solvers, and do not exclusively use quantum annealing to solve optimization problems. 
 4. Run an example:
 ```shell
 cd tests
@@ -137,7 +137,7 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
 
 ## Authors
 - [Elijah Pelofske](mailto:epelofske@lanl.gov): Information Sciences, Los Alamos National Laboratory
-- [Hristo Djidjev](mailto:djidjev@lanl.gov): Information Sciences, Los Alamos National Laboratory
+- [Hristo Djidjev](mailto:hdjidjev@msn.com): Information Sciences, Los Alamos National Laboratory and Institute of Information and Communication Technologies, Sofia, Bulgaria
 - [Dan O'Malley](mailto:omalled@lanl.gov): Computational Earth Science, Los Alamos National Laboratory
 - [Maksim E. Eren](mailto:maksim@lanl.gov): Advanced Research in Cyber Systems, Los Alamos National Laboratory
 - [Boian S. Alexandrov](mailto:boian@lanl.gov): Theoretical Division, Los Alamos National Laboratory
