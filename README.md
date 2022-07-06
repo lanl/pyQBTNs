@@ -115,22 +115,24 @@ print("Reconstructed Matrix =", qbtns.get_reconstructed_tensor())
     howpublished = {\url{https://github.com/lanl/pyQBTNs}}
 }
 
-@misc{pelofske2021boolean,
-    title={Boolean Hierarchical Tucker Networks on Quantum Annealers}, 
-    author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
-    year={2021},
-    eprint={2103.07399},
-    archivePrefix={arXiv},
-    primaryClass={quant-ph}
+@inproceedings{pelofske2021boolean,
+  title={Boolean hierarchical tucker networks on quantum annealers},
+  author={Pelofske, Elijah and Hahn, Georg and O’Malley, Daniel and Djidjev, Hristo N and Alexandrov, Boian S},
+  booktitle={International Conference on Large-Scale Scientific Computing},
+  pages={351--358},
+  year={2021},
+  organization={Springer}
 }
 
-@misc{pelofske2021quantum,
-      title={Quantum Annealing Algorithms for Boolean Tensor Networks}, 
-      author={Elijah Pelofske and Georg Hahn and Daniel O'Malley and Hristo N. Djidjev and Boian S. Alexandrov},
-      year={2021},
-      eprint={2107.13659},
-      archivePrefix={arXiv},
-      primaryClass={quant-ph}
+@article{pelofske2022quantum,
+  title={Quantum annealing algorithms for Boolean tensor networks},
+  author={Pelofske, Elijah and Hahn, Georg and O’Malley, Daniel and Djidjev, Hristo N and Alexandrov, Boian S},
+  journal={Scientific Reports},
+  volume={12},
+  number={1},
+  pages={1--19},
+  year={2022},
+  publisher={Nature Publishing Group}
 }
 ```
 
