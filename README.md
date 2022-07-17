@@ -10,7 +10,7 @@
   <img width="324" height="200" src="docs/rd100.png">
 </p>
 
-pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks. The methodologies for pyQBTNs are introduced in [1] and [2].
+pyQBTNs is a Python library for boolean matrix and tensor factorization using D-Wave quantum annealers. The library includes five different boolean tensor decomposition methods making up three distinct types of tensor networks.
 
 pyQBTNs allows the user to specify local solvers that do not require a connection to a quantum annealer, but still solve the optimization problems the quantum annealer would solve in the factorization algorithm. In order to use a D-Wave quantum annealer as the solver for this software, the user must set up a D-Wave configuration file. The tensor methods allow for multi-rank factorization, but the current implementation only allows single rank factorization (i.e. one rank used across the entire algorithm).
 
@@ -185,8 +185,4 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ## References
-[1] Pelofske, E., Hahn, G., O'Malley, D., Djidjev, H. N., & Alexandrov, B. S. (2021). Boolean Hierarchical Tucker Networks on Quantum Annealers. arXiv preprint arXiv:2103.07399.
-
-[2] Pelofske, E., Hahn, G., O'Malley, D., Djidjev, H. N., & Alexandrov, B. S. (2021). Quantum Annealing Algorithms for Boolean Tensor Networks. arXiv preprint arXiv:2107.13659.
-
-[3] D. O’Malley, H. N. Djidjev and B. S. Alexandrov, "Tucker-1 Boolean Tensor Factorization with Quantum Annealers," 2020 International Conference on Rebooting Computing (ICRC), 2020, pp. 58-65, doi: 10.1109/ICRC2020.2020.00002.
+[1] D. O’Malley, H. N. Djidjev and B. S. Alexandrov, "Tucker-1 Boolean Tensor Factorization with Quantum Annealers," 2020 International Conference on Rebooting Computing (ICRC), 2020, pp. 58-65, doi: 10.1109/ICRC2020.2020.00002.
